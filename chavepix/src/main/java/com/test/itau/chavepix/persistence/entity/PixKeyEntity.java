@@ -3,7 +3,10 @@ package com.test.itau.chavepix.persistence.entity;
 import com.test.itau.chavepix.dto.PixKeyDTO;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 
 @Table(name = "pix_keys")
@@ -41,6 +44,9 @@ public class PixKeyEntity {
 
     private String accountHolderLastName;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
+    private LocalDateTime dateTimeCreation;
 
     public PixKeyEntity(PixKeyDTO pixKeyDTO) {
         this.keyTypeEntity = KeyTypeEntity.valueOf(pixKeyDTO.getKeyTypeDTO().name());
