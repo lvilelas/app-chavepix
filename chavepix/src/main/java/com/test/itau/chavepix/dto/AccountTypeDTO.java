@@ -1,6 +1,6 @@
 package com.test.itau.chavepix.dto;
 
-public enum TipoConta {
+public enum AccountTypeDTO {
     CORRENTE,
     POUPANCA;
 }

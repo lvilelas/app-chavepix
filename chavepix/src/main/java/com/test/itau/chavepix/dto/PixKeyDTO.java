@@ -5,37 +5,38 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class ChavePixDTO {
+@AllArgsConstructor
+public class PixKeyDTO {
 
     private String id;
 
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
-    private TipoChave tipoChave;
+    private KeyTypeDTO keyTypeDTO;
 
     @NotEmpty
-    private String valorChave;
+    private String keyValue;
 
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
-    private TipoConta tipoConta;
+    private AccountTypeDTO accountTypeDTO;
 
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
-    private TipoPessoa tipoPessoa;
+    private PersonTypeDTO personTypeDTO;
 
     @NotEmpty
-    private String numeroAgencia;
+    private String agencyNumber;
 
     @NotEmpty
-    private String numeroConta;
+    private String accountNumber;
 
     @NotEmpty
-    private String nomeCorrentista;
+    private String accountHolderName;
 
-    private String sobrenomeCorrentista;
+    private String accountHolderLastName;
 }

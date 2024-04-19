@@ -1,6 +1,6 @@
 package com.test.itau.chavepix.dto;
 
-public enum TipoPessoa {
+public enum PersonTypeDTO {
     FISICA,
     JURIDICA
 }

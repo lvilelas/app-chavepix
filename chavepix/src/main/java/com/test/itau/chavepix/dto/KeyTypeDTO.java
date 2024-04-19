@@ -1,6 +1,6 @@
 package com.test.itau.chavepix.dto;
 
-public enum TipoChave {
+public enum KeyTypeDTO {
     CELULAR,
     EMAIL,
     CPF,

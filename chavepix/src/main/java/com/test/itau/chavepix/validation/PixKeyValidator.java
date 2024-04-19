@@ -1,7 +1,7 @@
 package com.test.itau.chavepix.validation;
 
 
-import com.test.itau.chavepix.dto.ChavePixDTO;
+import com.test.itau.chavepix.dto.PixKeyDTO;
 import com.test.itau.chavepix.helper.CPFCNPJHelper;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -11,78 +11,85 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component("before")
-public class ChavePixValidator implements Validator {
+public class PixKeyValidator implements Validator {
 
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return ChavePixDTO.class.equals(clazz);
+        return PixKeyDTO.class.equals(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
 
-        ChavePixDTO chavePix = (ChavePixDTO) target;
+        PixKeyDTO pixKey = (PixKeyDTO) target;
 
         //valida numero conta
-        if(!validaNumeroConta(chavePix.getNumeroConta())){
+        if(!hasValidAccountNumber(pixKey.getAccountNumber())){
             errors.rejectValue("numeroConta", null, "Numero Conta incorrecto");
         }
 
         //valida numero agencia
-        if(!validaNumeroAgencia(chavePix.getNumeroAgencia())){
+        if(!hasValidAgencyNumber(pixKey.getAgencyNumber())){
             errors.rejectValue("numeroAgencia", null, "Numero Agencia incorrecto");
         }
 
         //valida chavePIX
-        if(!validaChavePix(chavePix)){
+        if(!hasValidPixKey(pixKey)){
             errors.rejectValue("valorChave", null, "Valor chave incorrecto");
         }
     }
 
 
-    private boolean validaNumeroConta(String numeroConta){
-        String regexConta = "[0-9]{1,8}";
-        return validaRegex(regexConta,numeroConta);
+    private boolean hasValidAccountNumber(String numeroConta){
+        String accountRegex = "[0-9]{1,8}";
+        return hasValidStringFormat(accountRegex,numeroConta);
     }
 
-    private boolean validaNumeroAgencia(String numeroAgencia){
-        String regexConta = "[0-9]{1,4}";
-        return validaRegex(regexConta,numeroAgencia);
+    private boolean hasValidAgencyNumber(String numeroAgencia){
+        String agencyRegex = "[0-9]{1,4}";
+        return hasValidStringFormat(agencyRegex,numeroAgencia);
     }
 
-    private boolean validaChavePix(ChavePixDTO chavePix){
-        switch (chavePix.getTipoChave())  {
+        private boolean hasValidPixKey(PixKeyDTO pixKey){
+        switch (pixKey.getKeyTypeDTO())  {
             case CELULAR : {
                 String regex = "\\+[0-9]{1,2}[0-9]{2,3}[0-9]{9}";
-                if(!validaRegex(regex,chavePix.getValorChave())){
+                if(!hasValidStringFormat(regex,pixKey.getKeyValue())){
                     return false;
                 }
                 break;
             }
             case EMAIL:{
-                if(!chavePix.getValorChave().contains("@") || chavePix.getValorChave().length()>77){
+                if(!pixKey.getKeyValue().contains("@") || pixKey.getKeyValue().length()>77){
                     return false;
                 }
                 break;
             }
             case CPF:{
-                if(!CPFCNPJHelper.isCPF(chavePix.getValorChave())){
+                if(!CPFCNPJHelper.isCPF(pixKey.getKeyValue())){
                     return false;
                 }
                 break;
             }
             case CNPJ:{
-                if(!CPFCNPJHelper.isCNPJ(chavePix.getValorChave())){
+                if(!CPFCNPJHelper.isCNPJ(pixKey.getKeyValue())){
                     return false;
                 }
                 break;
-            }
+            } case ALEATORIO:{
+                if(pixKey.getKeyValue().length()>36){
+                    return false;
+                }
+                break;
+            } default:
+                return false;
+
         }
         return true;
     }
 
-    private boolean validaRegex(String regex, String message){
+    private boolean hasValidStringFormat(String regex, String message){
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(message);
         return matcher.matches();
