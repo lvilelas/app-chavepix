@@ -5,8 +5,12 @@ import com.test.itau.chavepix.dto.PixKeyDTO;
 import com.test.itau.chavepix.model.KeyTypeModel;
 import com.test.itau.chavepix.model.PersonTypeModel;
 import com.test.itau.chavepix.model.PixKeyModel;
-import com.test.itau.chavepix.entity.PixKeyEntity;
-import com.test.itau.chavepix.repository.PixKeyRepository;
+import com.test.itau.chavepix.persistence.entity.PixKeyEntity;
+import com.test.itau.chavepix.persistence.repository.PixKeyRepository;
+import com.test.itau.chavepix.validation.ValidateIfDocumentsAlreayExist;
+import com.test.itau.chavepix.validation.ValidateIfKeyValueIsUnique;
+import com.test.itau.chavepix.validation.ValidatePersonType;
+import com.test.itau.chavepix.validation.ValidatePixKeyCountLimit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,34 +23,24 @@ public class PixKeysService {
     private final PixKeyRepository pixKeyRepository;
 
     public PixKeyEntity createPixKey(PixKeyDTO pixKeyDTO) {
+
         AccountPixKeysModel accountPixKeys = findByAccountAndAgency(pixKeyDTO.getAgencyNumber(), pixKeyDTO.getAccountNumber());
+
         if(accountPixKeys != null){
-            validatePixKeyCountLimit(accountPixKeys, pixKeyDTO);
-            validatePersonType(accountPixKeys, pixKeyDTO);
-            validateIfKeyValueIsUnique(accountPixKeys, pixKeyDTO);
+            ValidatePixKeyCountLimit validatePixKeyCountLimit = new ValidatePixKeyCountLimit();
+            ValidatePersonType validatePersonType = new ValidatePersonType();
+            ValidateIfDocumentsAlreayExist validateIfDocumentsAlreayExist = new ValidateIfDocumentsAlreayExist();
+
+            validatePixKeyCountLimit.setNextChain(validatePersonType);
+            validatePersonType.setNextChain(validateIfDocumentsAlreayExist);
+            validatePixKeyCountLimit.validatePixKey(accountPixKeys,pixKeyDTO,pixKeyRepository);
         }
+
+        ValidateIfKeyValueIsUnique validateIfKeyValueIsUnique = new ValidateIfKeyValueIsUnique();
+        validateIfKeyValueIsUnique.validatePixKey(accountPixKeys,pixKeyDTO,pixKeyRepository);
 
         return pixKeyRepository.save(new PixKeyEntity(pixKeyDTO));
     }
-
-    private void validatePixKeyCountLimit(AccountPixKeysModel accountPixKeys, PixKeyDTO pixKey){
-        if(accountPixKeys.hasKeysLimitBeenReached()){
-            throw new RuntimeException("Pix Keys Limit Reached");
-        }
-    }
-
-    private void validatePersonType(AccountPixKeysModel accountPixKeys, PixKeyDTO pixKey){
-        if(!accountPixKeys.isValidPersonType(pixKey.getPersonTypeDTO())){
-            throw new RuntimeException("Person Type Invalid");
-        }
-    }
-
-    private void validateIfKeyValueIsUnique(AccountPixKeysModel accountPixKeys, PixKeyDTO pixKey){
-        if(pixKeyRepository.existsByKeyValue(pixKey.getKeyValue())){
-            throw new RuntimeException("Pix Keys Not Unique");
-        }
-    }
-
 
 
     private AccountPixKeysModel findByAccountAndAgency(String agencyNumber, String accountNumber) {

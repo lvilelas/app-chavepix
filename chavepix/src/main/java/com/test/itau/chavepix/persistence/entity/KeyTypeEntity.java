@@ -1,4 +1,4 @@
-package com.test.itau.chavepix.entity;
+package com.test.itau.chavepix.persistence.entity;
 
 import lombok.AllArgsConstructor;
 

@@ -2,6 +2,7 @@ package com.test.itau.chavepix.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.NotEmpty;
@@ -18,25 +19,33 @@ public class PixKeyDTO {
     private String id;
 
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
+    @JsonProperty("tipo_chave")
     private KeyTypeDTO keyTypeDTO;
 
     @NotEmpty
+    @JsonProperty("valor_chave")
     private String keyValue;
 
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
+    @JsonProperty("tipo_conta")
     private AccountTypeDTO accountTypeDTO;
 
+    @JsonProperty("tipo_pessoa")
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
     private PersonTypeDTO personTypeDTO;
 
     @NotEmpty
+    @JsonProperty("numero_agencia")
     private String agencyNumber;
 
     @NotEmpty
+    @JsonProperty("numero_conta")
     private String accountNumber;
 
     @NotEmpty
+    @JsonProperty("nome_correntista")
     private String accountHolderName;
 
+    @JsonProperty("sobrenome_correntista")
     private String accountHolderLastName;
 }

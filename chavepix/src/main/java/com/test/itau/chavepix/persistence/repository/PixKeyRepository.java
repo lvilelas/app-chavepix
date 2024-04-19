@@ -1,6 +1,6 @@
-package com.test.itau.chavepix.repository;
+package com.test.itau.chavepix.persistence.repository;
 
-import com.test.itau.chavepix.entity.PixKeyEntity;
+import com.test.itau.chavepix.persistence.entity.PixKeyEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

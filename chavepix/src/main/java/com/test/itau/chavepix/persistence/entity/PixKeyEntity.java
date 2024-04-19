@@ -1,4 +1,4 @@
-package com.test.itau.chavepix.entity;
+package com.test.itau.chavepix.persistence.entity;
 
 import com.test.itau.chavepix.dto.PixKeyDTO;
 import jakarta.persistence.*;
@@ -20,14 +20,17 @@ public class PixKeyEntity {
     private UUID id;
 
     @Enumerated(EnumType.STRING)
+    @Column(name="keyType")
     private KeyTypeEntity keyTypeEntity;
 
     private String keyValue;
 
     @Enumerated(EnumType.STRING)
+    @Column(name="accountType")
     private AccountTypeEntity accountTypeEntity;
 
     @Enumerated(EnumType.STRING)
+    @Column(name="personType")
     private PersonTypeEntity personTypeEntity;
 
     private String agencyNumber;

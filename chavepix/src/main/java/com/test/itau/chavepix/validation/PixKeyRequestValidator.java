@@ -11,7 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component("before")
-public class PixKeyValidator implements Validator {
+public class PixKeyRequestValidator implements Validator {
 
 
     @Override
@@ -67,13 +67,13 @@ public class PixKeyValidator implements Validator {
                 break;
             }
             case CPF:{
-                if(!CPFCNPJHelper.isCPF(pixKey.getKeyValue())){
+                if(!CPFCNPJHelper.isCPF(pixKey.getKeyValue()) || !pixKey.getPersonTypeDTO().name().equals("FISICA")){
                     return false;
                 }
                 break;
             }
             case CNPJ:{
-                if(!CPFCNPJHelper.isCNPJ(pixKey.getKeyValue())){
+                if(!CPFCNPJHelper.isCNPJ(pixKey.getKeyValue()) || !pixKey.getPersonTypeDTO().name().equals("JURIDICA")){
                     return false;
                 }
                 break;

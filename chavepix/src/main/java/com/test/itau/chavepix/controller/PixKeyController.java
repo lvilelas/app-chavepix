@@ -1,10 +1,10 @@
 package com.test.itau.chavepix.controller;
 
 import com.test.itau.chavepix.dto.PixKeyDTO;
-import com.test.itau.chavepix.entity.PixKeyEntity;
+import com.test.itau.chavepix.persistence.entity.PixKeyEntity;
 
 import com.test.itau.chavepix.service.PixKeysService;
-import com.test.itau.chavepix.validation.PixKeyValidator;
+import com.test.itau.chavepix.validation.PixKeyRequestValidator;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.WebDataBinder;
@@ -20,7 +20,7 @@ public class PixKeyController {
 
     @InitBinder
     public void initBinder(WebDataBinder webDataBinder){
-        webDataBinder.addValidators(new PixKeyValidator());
+        webDataBinder.addValidators(new PixKeyRequestValidator());
     }
 
     @PostMapping("/create_pixKey")
