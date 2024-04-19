@@ -1,8 +1,11 @@
 package com.test.itau.chavepix.validation;
 
 
+import com.test.itau.chavepix.dto.AccountTypeDTO;
+import com.test.itau.chavepix.dto.KeyTypeDTO;
 import com.test.itau.chavepix.dto.PixKeyDTO;
 import com.test.itau.chavepix.helper.CPFCNPJHelper;
+import jakarta.validation.ValidationException;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -10,7 +13,7 @@ import org.springframework.validation.Validator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Component("before")
+@Component
 public class PixKeyRequestValidator implements Validator {
 
 
@@ -26,32 +29,65 @@ public class PixKeyRequestValidator implements Validator {
 
         //valida numero conta
         if(!hasValidAccountNumber(pixKey.getAccountNumber())){
-            errors.rejectValue("numeroConta", null, "Numero Conta incorrecto");
+            errors.rejectValue("numero_conta is not valid","422");
         }
 
         //valida numero agencia
         if(!hasValidAgencyNumber(pixKey.getAgencyNumber())){
-            errors.rejectValue("numeroAgencia", null, "Numero Agencia incorrecto");
+            errors.rejectValue("numero_agencia is not valid","422");
         }
 
+        if(!hasValidAccountType(pixKey.getAccountTypeDTO())){
+            errors.rejectValue("tipo_conta is not valid","422");
+        }
+
+        if(!hasValidPixKeyType(pixKey.getKeyTypeDTO())){
+            errors.rejectValue("tipo_chave is not valid","422");
+        }
         //valida chavePIX
         if(!hasValidPixKey(pixKey)){
-            errors.rejectValue("valorChave", null, "Valor chave incorrecto");
+            errors.rejectValue("valor_chave is not valid", "422");
         }
+
+        if(!hasValidAccountHolderName(pixKey.getAccountHolderName())){
+            errors.rejectValue("nome_correntista is not valid","422");
+        }
+
+    }
+
+    private boolean hasValidAccountHolderName(String accountHolderName) {
+        return !(accountHolderName==null || accountHolderName.isEmpty());
+    }
+
+    private boolean hasValidAccountType(AccountTypeDTO accountTypeDTO) {
+        return !(accountTypeDTO==null);
+    }
+
+    private boolean hasValidPixKeyType(KeyTypeDTO keyTypeDTO) {
+        return !(keyTypeDTO==null);
     }
 
 
     private boolean hasValidAccountNumber(String numeroConta){
+        if(numeroConta==null || numeroConta.isEmpty()){
+            return false;
+        }
         String accountRegex = "[0-9]{1,8}";
         return hasValidStringFormat(accountRegex,numeroConta);
     }
 
     private boolean hasValidAgencyNumber(String numeroAgencia){
+        if(numeroAgencia==null || numeroAgencia.isEmpty()){
+            return false;
+        }
         String agencyRegex = "[0-9]{1,4}";
         return hasValidStringFormat(agencyRegex,numeroAgencia);
     }
 
         private boolean hasValidPixKey(PixKeyDTO pixKey){
+        if(pixKey.getKeyValue() == null){
+            return false;
+        }
         switch (pixKey.getKeyTypeDTO())  {
             case CELULAR : {
                 String regex = "\\+[0-9]{1,2}[0-9]{2,3}[0-9]{9}";
@@ -67,13 +103,13 @@ public class PixKeyRequestValidator implements Validator {
                 break;
             }
             case CPF:{
-                if(!CPFCNPJHelper.isCPF(pixKey.getKeyValue()) || !pixKey.getPersonTypeDTO().name().equals("FISICA")){
+                if(!CPFCNPJHelper.isCPF(pixKey.getKeyValue())){
                     return false;
                 }
                 break;
             }
             case CNPJ:{
-                if(!CPFCNPJHelper.isCNPJ(pixKey.getKeyValue()) || !pixKey.getPersonTypeDTO().name().equals("JURIDICA")){
+                if(!CPFCNPJHelper.isCNPJ(pixKey.getKeyValue())){
                     return false;
                 }
                 break;

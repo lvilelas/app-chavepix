@@ -7,6 +7,7 @@ import com.test.itau.chavepix.service.PixKeysService;
 import com.test.itau.chavepix.validation.PixKeyRequestValidator;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +19,8 @@ public class PixKeyController {
     @Autowired
     PixKeysService pixKeysService;
 
-    @InitBinder
-    public void initBinder(WebDataBinder webDataBinder){
+    @InitBinder("pixKeyDTO")
+    public void initBinder(final WebDataBinder webDataBinder){
         webDataBinder.addValidators(new PixKeyRequestValidator());
     }
 

@@ -22,7 +22,6 @@ public class PixKeyDTO {
     @JsonProperty("tipo_chave")
     private KeyTypeDTO keyTypeDTO;
 
-    @NotEmpty
     @JsonProperty("valor_chave")
     private String keyValue;
 
@@ -34,15 +33,12 @@ public class PixKeyDTO {
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
     private PersonTypeDTO personTypeDTO;
 
-    @NotEmpty
     @JsonProperty("numero_agencia")
     private String agencyNumber;
 
-    @NotEmpty
     @JsonProperty("numero_conta")
     private String accountNumber;
 
-    @NotEmpty
     @JsonProperty("nome_correntista")
     private String accountHolderName;
 

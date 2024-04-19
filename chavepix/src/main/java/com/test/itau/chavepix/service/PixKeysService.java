@@ -7,10 +7,7 @@ import com.test.itau.chavepix.model.PersonTypeModel;
 import com.test.itau.chavepix.model.PixKeyModel;
 import com.test.itau.chavepix.persistence.entity.PixKeyEntity;
 import com.test.itau.chavepix.persistence.repository.PixKeyRepository;
-import com.test.itau.chavepix.validation.ValidateIfDocumentsAlreayExist;
-import com.test.itau.chavepix.validation.ValidateIfKeyValueIsUnique;
-import com.test.itau.chavepix.validation.ValidatePersonType;
-import com.test.itau.chavepix.validation.ValidatePixKeyCountLimit;
+import com.test.itau.chavepix.validation.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +34,9 @@ public class PixKeysService {
         }
 
         ValidateIfKeyValueIsUnique validateIfKeyValueIsUnique = new ValidateIfKeyValueIsUnique();
+        ValidatePixKeyType validatePixKeyType = new ValidatePixKeyType();
+
+        validateIfKeyValueIsUnique.setNextChain(validatePixKeyType);
         validateIfKeyValueIsUnique.validatePixKey(accountPixKeys,pixKeyDTO,pixKeyRepository);
 
         return pixKeyRepository.save(new PixKeyEntity(pixKeyDTO));
