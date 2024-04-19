@@ -3,9 +3,9 @@ package com.test.itau.chavepix.validation;
 
 import com.test.itau.chavepix.dto.AccountTypeDTO;
 import com.test.itau.chavepix.dto.KeyTypeDTO;
+import com.test.itau.chavepix.dto.PersonTypeDTO;
 import com.test.itau.chavepix.dto.PixKeyDTO;
 import com.test.itau.chavepix.helper.CPFCNPJHelper;
-import jakarta.validation.ValidationException;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -37,6 +37,9 @@ public class PixKeyRequestValidator implements Validator {
             errors.rejectValue("numero_agencia is not valid","422");
         }
 
+        if(!hasValidPersonType(pixKey.getPersonTypeDTO())){
+            errors.rejectValue("tipo_pessoa is not valid","422");
+        }
         if(!hasValidAccountType(pixKey.getAccountTypeDTO())){
             errors.rejectValue("tipo_conta is not valid","422");
         }
@@ -53,6 +56,10 @@ public class PixKeyRequestValidator implements Validator {
             errors.rejectValue("nome_correntista is not valid","422");
         }
 
+    }
+
+    private boolean hasValidPersonType(PersonTypeDTO personTypeDTO) {
+        return !(personTypeDTO==null);
     }
 
     private boolean hasValidAccountHolderName(String accountHolderName) {
@@ -84,8 +91,8 @@ public class PixKeyRequestValidator implements Validator {
         return hasValidStringFormat(agencyRegex,numeroAgencia);
     }
 
-        private boolean hasValidPixKey(PixKeyDTO pixKey){
-        if(pixKey.getKeyValue() == null){
+    private boolean hasValidPixKey(PixKeyDTO pixKey){
+        if(pixKey.getKeyValue() == null || pixKey.getKeyValue().isEmpty()){
             return false;
         }
         switch (pixKey.getKeyTypeDTO())  {

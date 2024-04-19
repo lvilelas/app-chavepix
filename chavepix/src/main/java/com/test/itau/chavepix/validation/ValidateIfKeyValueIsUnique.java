@@ -3,23 +3,20 @@ package com.test.itau.chavepix.validation;
 import com.test.itau.chavepix.dto.PixKeyDTO;
 import com.test.itau.chavepix.model.AccountPixKeysModel;
 import com.test.itau.chavepix.persistence.repository.PixKeyRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public class ValidateIfKeyValueIsUnique implements PixKeyValidationHandler {
+public class ValidateIfKeyValueIsUnique extends AbstractPixKeyValidationHandler {
 
-    private PixKeyValidationHandler chain;
+    private final PixKeyRepository pixKeyRepository;
 
-    @Override
-    public void setNextChain(PixKeyValidationHandler nextChain) {
-        this.chain = nextChain;
+    public ValidateIfKeyValueIsUnique(PixKeyRepository pixKeyRepository) {
+        this.pixKeyRepository = pixKeyRepository;
     }
 
     @Override
-    public void validatePixKey(AccountPixKeysModel accountPixKeys, PixKeyDTO pixKey, PixKeyRepository pixKeyRepository) {
+    protected void validate(AccountPixKeysModel accountPixKeys, PixKeyDTO pixKey) {
         if(pixKeyRepository.existsByKeyValue(pixKey.getKeyValue())){
             throw new RuntimeException("Pix Keys Not Unique");
-        }
-        if(chain!=null){
-            chain.validatePixKey(accountPixKeys, pixKey,pixKeyRepository);
         }
     }
 }

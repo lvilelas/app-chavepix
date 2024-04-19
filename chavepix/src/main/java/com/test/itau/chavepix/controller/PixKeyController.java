@@ -27,7 +27,6 @@ public class PixKeyController {
     @PostMapping("/create_pixKey")
     public PixKeyEntity createPixKey(@RequestBody @Valid PixKeyDTO pixKeyDTO){
         return pixKeysService.createPixKey(pixKeyDTO);
-
     }
 
 }

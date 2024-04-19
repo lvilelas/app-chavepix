@@ -4,21 +4,12 @@ import com.test.itau.chavepix.dto.PixKeyDTO;
 import com.test.itau.chavepix.model.AccountPixKeysModel;
 import com.test.itau.chavepix.persistence.repository.PixKeyRepository;
 
-public class ValidateIfDocumentsAlreayExist implements PixKeyValidationHandler{
-
-    private PixKeyValidationHandler chain;
-    @Override
-    public void setNextChain(PixKeyValidationHandler nextChain) {
-        this.chain = nextChain;
-    }
+public class ValidateIfDocumentsAlreayExist extends AbstractPixKeyValidationHandler {
 
     @Override
-    public void validatePixKey(AccountPixKeysModel accountPixKeys, PixKeyDTO pixKey, PixKeyRepository pixKeyRepository) {
-        if(accountPixKeys.hasDocumentRegistered(pixKey)){
+    protected void validate(AccountPixKeysModel accountPixKeys, PixKeyDTO pixKey) {
+        if(accountPixKeys!=null && accountPixKeys.hasDocumentRegistered(pixKey)){
             throw new RuntimeException("Pix Type Already Registered!");
-        }
-        if(chain!=null){
-            chain.validatePixKey(accountPixKeys, pixKey, pixKeyRepository);
         }
     }
 }

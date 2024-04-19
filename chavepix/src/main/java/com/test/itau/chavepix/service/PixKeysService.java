@@ -7,7 +7,7 @@ import com.test.itau.chavepix.model.PersonTypeModel;
 import com.test.itau.chavepix.model.PixKeyModel;
 import com.test.itau.chavepix.persistence.entity.PixKeyEntity;
 import com.test.itau.chavepix.persistence.repository.PixKeyRepository;
-import com.test.itau.chavepix.validation.*;
+import com.test.itau.chavepix.validation.handler.PixKeyValidationHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,26 +18,12 @@ import java.util.List;
 public class PixKeysService {
 
     private final PixKeyRepository pixKeyRepository;
+    private final PixKeyValidationHandler pixKeyValidationHandler;
 
     public PixKeyEntity createPixKey(PixKeyDTO pixKeyDTO) {
 
         AccountPixKeysModel accountPixKeys = findByAccountAndAgency(pixKeyDTO.getAgencyNumber(), pixKeyDTO.getAccountNumber());
-
-        if(accountPixKeys != null){
-            ValidatePixKeyCountLimit validatePixKeyCountLimit = new ValidatePixKeyCountLimit();
-            ValidatePersonType validatePersonType = new ValidatePersonType();
-            ValidateIfDocumentsAlreayExist validateIfDocumentsAlreayExist = new ValidateIfDocumentsAlreayExist();
-
-            validatePixKeyCountLimit.setNextChain(validatePersonType);
-            validatePersonType.setNextChain(validateIfDocumentsAlreayExist);
-            validatePixKeyCountLimit.validatePixKey(accountPixKeys,pixKeyDTO,pixKeyRepository);
-        }
-
-        ValidateIfKeyValueIsUnique validateIfKeyValueIsUnique = new ValidateIfKeyValueIsUnique();
-        ValidatePixKeyType validatePixKeyType = new ValidatePixKeyType();
-
-        validateIfKeyValueIsUnique.setNextChain(validatePixKeyType);
-        validateIfKeyValueIsUnique.validatePixKey(accountPixKeys,pixKeyDTO,pixKeyRepository);
+        pixKeyValidationHandler.validatePixKey(accountPixKeys,pixKeyDTO);
 
         return pixKeyRepository.save(new PixKeyEntity(pixKeyDTO));
     }

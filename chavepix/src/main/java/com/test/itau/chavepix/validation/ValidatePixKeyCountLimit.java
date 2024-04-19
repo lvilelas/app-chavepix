@@ -4,22 +4,12 @@ import com.test.itau.chavepix.dto.PixKeyDTO;
 import com.test.itau.chavepix.model.AccountPixKeysModel;
 import com.test.itau.chavepix.persistence.repository.PixKeyRepository;
 
-public class ValidatePixKeyCountLimit implements PixKeyValidationHandler{
-
-    private PixKeyValidationHandler chain;
+public class ValidatePixKeyCountLimit extends AbstractPixKeyValidationHandler{
 
     @Override
-    public void setNextChain(PixKeyValidationHandler nextChain) {
-        this.chain = nextChain;
-    }
-
-    @Override
-    public void validatePixKey(AccountPixKeysModel accountPixKeys, PixKeyDTO pixKey, PixKeyRepository pixKeyRepository) {
-        if(accountPixKeys.hasKeysLimitBeenReached()){
+    public void validate(AccountPixKeysModel accountPixKeys, PixKeyDTO pixKey) {
+        if(accountPixKeys!=null && accountPixKeys.hasKeysLimitBeenReached()){
             throw new RuntimeException("Pix Keys Limit Reached");
-        }
-        if(chain!=null){
-            chain.validatePixKey(accountPixKeys, pixKey,pixKeyRepository);
         }
     }
 }
