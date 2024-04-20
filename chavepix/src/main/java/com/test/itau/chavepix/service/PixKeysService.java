@@ -3,7 +3,9 @@ package com.test.itau.chavepix.service;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.test.itau.chavepix.dto.PixKeyOutDTO;
 import com.test.itau.chavepix.dto.PixKeyQueryDTO;
+import com.test.itau.chavepix.dto.PixQueryOutDTO;
 import com.test.itau.chavepix.model.AccountPixKeysModel;
 import com.test.itau.chavepix.dto.PixKeyDTO;
 import com.test.itau.chavepix.model.KeyTypeModel;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,21 +31,25 @@ public class PixKeysService {
     private final PixKeyValidationHandler pixKeyValidationHandler;
     private final PixKeyQueryValidationHandler pixKeyQueryValidationHandler;
 
-    public PixKeyEntity createPixKey(PixKeyDTO pixKeyDTO) {
+    public PixKeyOutDTO createPixKey(PixKeyDTO pixKeyDTO) {
 
         AccountPixKeysModel accountPixKeys = findByAccountAndAgency(pixKeyDTO.getAgencyNumber(), pixKeyDTO.getAccountNumber());
         pixKeyValidationHandler.validatePixKey(accountPixKeys,pixKeyDTO);
 
-        return pixKeyRepository.save(new PixKeyEntity(pixKeyDTO));
+        return new PixKeyOutDTO(pixKeyRepository.save(new PixKeyEntity(pixKeyDTO)));
     }
 
 
-    public List<PixKeyEntity> searchPixKey(PixKeyQueryDTO pixKeyQueryDTO) {
+    public List<PixQueryOutDTO> searchPixKey(PixKeyQueryDTO pixKeyQueryDTO) {
 
         Map<String,String> map = convertTOMap(pixKeyQueryDTO);
         pixKeyQueryValidationHandler.validatePixKeyQuery(map);
 
-        return pixKeyRepository.findCustom(pixKeyQueryDTO.getId(),pixKeyQueryDTO.getKeyTYpe(),pixKeyQueryDTO.getAgencyNumber(), pixKeyQueryDTO.getAccountNumber(), pixKeyQueryDTO.getAccountHolderName());
+        List<PixKeyEntity> pixKeys =  pixKeyRepository.findCustom(pixKeyQueryDTO.getId(),pixKeyQueryDTO.getKeyTYpe(),pixKeyQueryDTO.getAgencyNumber(), pixKeyQueryDTO.getAccountNumber(), pixKeyQueryDTO.getAccountHolderName());
+
+        return  pixKeys.stream()
+                .map(PixQueryOutDTO::new)
+                .collect(Collectors.toList());
     }
 
     private AccountPixKeysModel findByAccountAndAgency(String agencyNumber, String accountNumber) {

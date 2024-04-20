@@ -9,7 +9,7 @@ public class PixKeyDTOMocks {
 
     public PixKeyDTO getValidCPFPixKeyMock(){
 
-        return new PixKeyDTO(null,
+        return new PixKeyDTO(
                 KeyTypeDTO.CPF,
                 "37819393831",
                 AccountTypeDTO.CORRENTE,
@@ -24,7 +24,7 @@ public class PixKeyDTOMocks {
 
     public PixKeyDTO getValidCNPJPixKeyMock(){
 
-        return new PixKeyDTO(null,
+        return new PixKeyDTO(
                 KeyTypeDTO.CNPJ,
                 "48135933000112",
                 AccountTypeDTO.CORRENTE,
@@ -39,7 +39,7 @@ public class PixKeyDTOMocks {
 
     public PixKeyDTO getInvalidPixKeyValueCPF(){
 
-        return new PixKeyDTO(null,
+        return new PixKeyDTO(
                 KeyTypeDTO.CPF,
                 "378193938311",
                 AccountTypeDTO.CORRENTE,
@@ -53,7 +53,7 @@ public class PixKeyDTOMocks {
 
     public PixKeyDTO getInvalidPixKeyValueCNPJ(){
 
-        return new PixKeyDTO(null,
+        return new PixKeyDTO(
                 KeyTypeDTO.CNPJ,
                 "378193938311",
                 AccountTypeDTO.CORRENTE,
@@ -67,7 +67,7 @@ public class PixKeyDTOMocks {
 
     public PixKeyDTO getInvalidPixKeyValueMobile(){
 
-        return new PixKeyDTO(null,
+        return new PixKeyDTO(
                 KeyTypeDTO.CELULAR,
                 "+1119384",
                 AccountTypeDTO.CORRENTE,
@@ -81,7 +81,7 @@ public class PixKeyDTOMocks {
 
     public PixKeyDTO getInvalidPixKeyValueEmail(){
 
-        return new PixKeyDTO(null,
+        return new PixKeyDTO(
                 KeyTypeDTO.EMAIL,
                 "+1119384",
                 AccountTypeDTO.CORRENTE,
@@ -95,7 +95,7 @@ public class PixKeyDTOMocks {
 
     public PixKeyDTO getInvalidPixKeyValueRandom(){
 
-        return new PixKeyDTO(null,
+        return new PixKeyDTO(
                 KeyTypeDTO.ALEATORIO,
                 "123213214521515215214124215216216276347587659758758",
                 AccountTypeDTO.CORRENTE,
@@ -109,7 +109,7 @@ public class PixKeyDTOMocks {
 
     public PixKeyDTO getInvalidPixKeyValueEmpty(){
 
-        return new PixKeyDTO(null,
+        return new PixKeyDTO(
                 KeyTypeDTO.ALEATORIO,
                 "",
                 AccountTypeDTO.CORRENTE,
@@ -123,7 +123,7 @@ public class PixKeyDTOMocks {
 
     public PixKeyDTO getInvalidPixKeyValueNull(){
 
-        return new PixKeyDTO(null,
+        return new PixKeyDTO(
                 KeyTypeDTO.ALEATORIO,
                 "",
                 AccountTypeDTO.CORRENTE,
@@ -138,7 +138,7 @@ public class PixKeyDTOMocks {
 
     public PixKeyDTO getInvalidPixKeyType(){
 
-        return new PixKeyDTO(null,
+        return new PixKeyDTO(
                 null,
                 "378193938311",
                 AccountTypeDTO.CORRENTE,
@@ -152,7 +152,7 @@ public class PixKeyDTOMocks {
 
     public PixKeyDTO getInvalidAccountTypeMock(){
 
-        return new PixKeyDTO(null,
+        return new PixKeyDTO(
                 KeyTypeDTO.CPF,
                 "37819393831",
                 null,
@@ -166,7 +166,7 @@ public class PixKeyDTOMocks {
 
     public PixKeyDTO getInvalidPersonTypeMock(){
 
-        return new PixKeyDTO(null,
+        return new PixKeyDTO(
                 KeyTypeDTO.CPF,
                 "37819393831",
                 AccountTypeDTO.CORRENTE,
@@ -180,7 +180,7 @@ public class PixKeyDTOMocks {
 
     public PixKeyDTO getInvalidAgencyNumberMock(){
 
-        return new PixKeyDTO(null,
+        return new PixKeyDTO(
                 KeyTypeDTO.CPF,
                 "37819393831",
                 AccountTypeDTO.CORRENTE,
@@ -194,7 +194,7 @@ public class PixKeyDTOMocks {
 
     public PixKeyDTO getInvalidAgencyNumberEmptyMock(){
 
-        return new PixKeyDTO(null,
+        return new PixKeyDTO(
                 KeyTypeDTO.CPF,
                 "37819393831",
                 AccountTypeDTO.CORRENTE,
@@ -208,7 +208,7 @@ public class PixKeyDTOMocks {
 
     public PixKeyDTO getInvalidAgencyNumberNullMock(){
 
-        return new PixKeyDTO(null,
+        return new PixKeyDTO(
                 KeyTypeDTO.CPF,
                 "37819393831",
                 AccountTypeDTO.CORRENTE,
@@ -222,7 +222,7 @@ public class PixKeyDTOMocks {
 
     public PixKeyDTO getInvalidAccountNumberMock(){
 
-        return new PixKeyDTO(null,
+        return new PixKeyDTO(
                 KeyTypeDTO.CPF,
                 "37819393831",
                 AccountTypeDTO.CORRENTE,
@@ -237,7 +237,7 @@ public class PixKeyDTOMocks {
 
     public PixKeyDTO getInvalidAccountNumberNullMock(){
 
-        return new PixKeyDTO(null,
+        return new PixKeyDTO(
                 KeyTypeDTO.CPF,
                 "37819393831",
                 AccountTypeDTO.CORRENTE,
@@ -251,7 +251,7 @@ public class PixKeyDTOMocks {
 
     public PixKeyDTO getInvalidAccountNumberEmptyMock(){
 
-        return new PixKeyDTO(null,
+        return new PixKeyDTO(
                 KeyTypeDTO.CPF,
                 "37819393831",
                 AccountTypeDTO.CORRENTE,
@@ -266,7 +266,7 @@ public class PixKeyDTOMocks {
 
     public PixKeyDTO getInvalidAccountHolderNameEmptyMock(){
 
-        return new PixKeyDTO(null,
+        return new PixKeyDTO(
                 KeyTypeDTO.CPF,
                 "37819393831",
                 AccountTypeDTO.CORRENTE,
@@ -280,7 +280,7 @@ public class PixKeyDTOMocks {
 
     public PixKeyDTO getInvalidAccountHolderNameNullMock(){
 
-        return new PixKeyDTO(null,
+        return new PixKeyDTO(
                 KeyTypeDTO.CPF,
                 "37819393831",
                 AccountTypeDTO.CORRENTE,
@@ -294,7 +294,7 @@ public class PixKeyDTOMocks {
 
     public PixKeyDTO getInvalidCPFPersonTypeErrorMock(){
 
-        return new PixKeyDTO(null,
+        return new PixKeyDTO(
                 KeyTypeDTO.CPF,
                 "37819393831",
                 AccountTypeDTO.CORRENTE,
@@ -308,7 +308,7 @@ public class PixKeyDTOMocks {
 
     public PixKeyDTO getInvalidCNPJPersonTypeErrorMock(){
 
-        return new PixKeyDTO(null,
+        return new PixKeyDTO(
                 KeyTypeDTO.CNPJ,
                 "37819393831",
                 AccountTypeDTO.CORRENTE,
