@@ -1,4 +1,4 @@
-package com.test.itau.chavepix.validation;
+package com.test.itau.chavepix.validation.pixkey;
 
 
 import com.test.itau.chavepix.dto.AccountTypeDTO;

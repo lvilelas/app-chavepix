@@ -1,14 +1,13 @@
-package com.test.itau.chavepix.validation;
+package com.test.itau.chavepix.validation.pixkey;
 
 import com.test.itau.chavepix.dto.PixKeyDTO;
 import com.test.itau.chavepix.model.AccountPixKeysModel;
-import com.test.itau.chavepix.persistence.repository.PixKeyRepository;
 
 public class ValidatePixKeyType extends AbstractPixKeyValidationHandler {
 
 
     @Override
-    protected void validate(AccountPixKeysModel accountPixKeys, PixKeyDTO pixKey) {
+    public void validate(AccountPixKeysModel accountPixKeys, PixKeyDTO pixKey) {
             switch (pixKey.getKeyTypeDTO())  {
                 case CPF:
                     if(pixKey.getPersonTypeDTO().name().equals("JURIDICA")){

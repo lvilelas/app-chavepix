@@ -2,6 +2,7 @@ package com.test.itau.chavepix.validation;
 
 import com.test.itau.chavepix.dto.PixKeyDTO;
 import com.test.itau.chavepix.mocks.PixKeyDTOMocks;
+import com.test.itau.chavepix.validation.pixkey.PixKeyRequestValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.validation.BeanPropertyBindingResult;

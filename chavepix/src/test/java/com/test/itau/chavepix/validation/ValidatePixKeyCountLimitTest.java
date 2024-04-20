@@ -1,9 +1,9 @@
 package com.test.itau.chavepix.validation;
-import com.test.itau.chavepix.dto.PixKeyDTO;
 import com.test.itau.chavepix.mocks.AccountPixKeysModelMocks;
 import com.test.itau.chavepix.model.AccountPixKeysModel;
 import com.test.itau.chavepix.model.KeyTypeModel;
 import com.test.itau.chavepix.model.PixKeyModel;
+import com.test.itau.chavepix.validation.pixkey.ValidatePixKeyCountLimit;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;

@@ -1,5 +1,6 @@
 package com.test.itau.chavepix.validation;
 import com.test.itau.chavepix.mocks.AccountPixKeysModelMocks;
+import com.test.itau.chavepix.validation.pixkey.ValidatePixKeyType;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;

@@ -1,8 +1,7 @@
-package com.test.itau.chavepix.validation;
+package com.test.itau.chavepix.validation.pixkey;
 
 import com.test.itau.chavepix.dto.PixKeyDTO;
 import com.test.itau.chavepix.model.AccountPixKeysModel;
-import com.test.itau.chavepix.persistence.repository.PixKeyRepository;
 
 public class ValidatePixKeyCountLimit extends AbstractPixKeyValidationHandler{
 
