@@ -22,6 +22,11 @@ public class PixKeyController {
         return pixKeysService.createPixKey(pixKeyDTO);
     }
 
+    @PutMapping("/update_pix_key")
+    public PixKeyOutDTO updatePixKey(@RequestBody PixKeyDTO pixKeyDTO){
+        return pixKeysService.updatePixKey(pixKeyDTO);
+    }
+
     @GetMapping("/search_pix_key")
     public List<PixQueryOutDTO> updatePixKey(@RequestParam(value="id",required = false) UUID id,
                                              @RequestParam(value="tipo_chave",required = false) String keyTYpe,

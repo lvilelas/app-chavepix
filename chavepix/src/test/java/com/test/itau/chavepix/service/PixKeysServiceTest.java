@@ -15,10 +15,18 @@ import com.test.itau.chavepix.validation.handler.PixKeyRequestValidatorHandler;
 import com.test.itau.chavepix.validation.handler.PixKeyValidationHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.NotReadablePropertyException;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.test.context.ContextConfiguration;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -30,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@SpringBootTest
 public class PixKeysServiceTest extends PixKeyDTOMocks {
 
     @Mock
@@ -39,6 +48,7 @@ public class PixKeysServiceTest extends PixKeyDTOMocks {
     private PixKeyValidationHandler pixKeyValidationHandler;
 
     @Mock
+    @Qualifier("createRequestChain")
     private PixKeyRequestValidatorHandler pixKeyRequestValidatorHandler;
 
     @Mock
@@ -59,11 +69,14 @@ public class PixKeysServiceTest extends PixKeyDTOMocks {
         PixKeyDTO pixKeyDTO = getValidCPFPixKeyMock();
         PixKeyEntity pixKeyEntity = new PixKeyEntity(pixKeyDTO);
         pixKeyEntity.setDateTimeCreation(LocalDateTime.now());
+        pixKeyEntity.setId(UUID.randomUUID());
         List<PixKeyEntity> list = Collections.nCopies(5, new PixKeyEntity(getValidCPFPixKeyMock()));
 
         // Mocking repository behavior
-        when(pixKeyRepository.save(any(PixKeyEntity.class))).thenReturn(pixKeyEntity);
+
         when(pixKeyRepository.findByAgencyNumberAndAccountNumber(anyString(), anyString())).thenReturn(list);
+        when(pixKeyRepository.save(any())).thenReturn(pixKeyEntity);
+
         // Calling the service method
         pixKeysService.createPixKey(pixKeyDTO);
 

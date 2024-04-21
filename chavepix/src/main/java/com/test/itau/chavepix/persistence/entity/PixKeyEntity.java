@@ -6,7 +6,6 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.UUID;
 
 @Table(name = "pix_keys")
@@ -61,5 +60,14 @@ public class PixKeyEntity {
         this.accountNumber = pixKeyDTO.getAccountNumber();
         this.accountHolderName = pixKeyDTO.getAccountHolderName();
         this.accountHolderLastName = pixKeyDTO.getAccountHolderLastName();
+    }
+
+    public void updatePixKey(PixKeyDTO pixKeyDTO) {
+        this.accountTypeEntity = AccountTypeEntity.valueOf(pixKeyDTO.getAccountTypeDTO().name());
+        this.agencyNumber = pixKeyDTO.getAgencyNumber();
+        this.accountNumber = pixKeyDTO.getAccountNumber();
+        this.accountHolderName = pixKeyDTO.getAccountHolderName();
+        this.accountHolderLastName = pixKeyDTO.getAccountHolderLastName();
+
     }
 }

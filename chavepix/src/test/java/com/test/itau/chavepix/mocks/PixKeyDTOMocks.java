@@ -5,11 +5,14 @@ import com.test.itau.chavepix.dto.KeyTypeDTO;
 import com.test.itau.chavepix.dto.PersonTypeDTO;
 import com.test.itau.chavepix.dto.PixKeyDTO;
 
+import java.util.UUID;
+
 public class PixKeyDTOMocks {
 
     public PixKeyDTO getValidCPFPixKeyMock(){
 
         return new PixKeyDTO(
+                UUID.randomUUID(),
                 KeyTypeDTO.CPF,
                 "37819393831",
                 AccountTypeDTO.CORRENTE,
@@ -25,6 +28,7 @@ public class PixKeyDTOMocks {
     public PixKeyDTO getValidCNPJPixKeyMock(){
 
         return new PixKeyDTO(
+                UUID.randomUUID(),
                 KeyTypeDTO.CNPJ,
                 "48135933000112",
                 AccountTypeDTO.CORRENTE,
@@ -40,6 +44,7 @@ public class PixKeyDTOMocks {
     public PixKeyDTO getInvalidPixKeyValueCPF(){
 
         return new PixKeyDTO(
+                UUID.randomUUID(),
                 KeyTypeDTO.CPF,
                 "378193938311",
                 AccountTypeDTO.CORRENTE,
@@ -54,6 +59,7 @@ public class PixKeyDTOMocks {
     public PixKeyDTO getInvalidPixKeyValueCNPJ(){
 
         return new PixKeyDTO(
+                UUID.randomUUID(),
                 KeyTypeDTO.CNPJ,
                 "378193938311",
                 AccountTypeDTO.CORRENTE,
@@ -68,6 +74,7 @@ public class PixKeyDTOMocks {
     public PixKeyDTO getInvalidPixKeyValueMobile(){
 
         return new PixKeyDTO(
+                UUID.randomUUID(),
                 KeyTypeDTO.CELULAR,
                 "+1119384",
                 AccountTypeDTO.CORRENTE,
@@ -82,6 +89,7 @@ public class PixKeyDTOMocks {
     public PixKeyDTO getInvalidPixKeyValueEmail(){
 
         return new PixKeyDTO(
+                UUID.randomUUID(),
                 KeyTypeDTO.EMAIL,
                 "+1119384",
                 AccountTypeDTO.CORRENTE,
@@ -96,6 +104,7 @@ public class PixKeyDTOMocks {
     public PixKeyDTO getInvalidPixKeyValueRandom(){
 
         return new PixKeyDTO(
+                UUID.randomUUID(),
                 KeyTypeDTO.ALEATORIO,
                 "123213214521515215214124215216216276347587659758758",
                 AccountTypeDTO.CORRENTE,
@@ -110,6 +119,7 @@ public class PixKeyDTOMocks {
     public PixKeyDTO getInvalidPixKeyValueEmpty(){
 
         return new PixKeyDTO(
+                UUID.randomUUID(),
                 KeyTypeDTO.ALEATORIO,
                 "",
                 AccountTypeDTO.CORRENTE,
@@ -124,6 +134,7 @@ public class PixKeyDTOMocks {
     public PixKeyDTO getInvalidPixKeyValueNull(){
 
         return new PixKeyDTO(
+                UUID.randomUUID(),
                 KeyTypeDTO.ALEATORIO,
                 "",
                 AccountTypeDTO.CORRENTE,
@@ -139,6 +150,7 @@ public class PixKeyDTOMocks {
     public PixKeyDTO getInvalidPixKeyType(){
 
         return new PixKeyDTO(
+                UUID.randomUUID(),
                 null,
                 "378193938311",
                 AccountTypeDTO.CORRENTE,
@@ -153,6 +165,7 @@ public class PixKeyDTOMocks {
     public PixKeyDTO getInvalidAccountTypeMock(){
 
         return new PixKeyDTO(
+                UUID.randomUUID(),
                 KeyTypeDTO.CPF,
                 "37819393831",
                 null,
@@ -167,6 +180,7 @@ public class PixKeyDTOMocks {
     public PixKeyDTO getInvalidPersonTypeMock(){
 
         return new PixKeyDTO(
+                UUID.randomUUID(),
                 KeyTypeDTO.CPF,
                 "37819393831",
                 AccountTypeDTO.CORRENTE,
@@ -181,6 +195,7 @@ public class PixKeyDTOMocks {
     public PixKeyDTO getInvalidAgencyNumberMock(){
 
         return new PixKeyDTO(
+                UUID.randomUUID(),
                 KeyTypeDTO.CPF,
                 "37819393831",
                 AccountTypeDTO.CORRENTE,
@@ -195,6 +210,7 @@ public class PixKeyDTOMocks {
     public PixKeyDTO getInvalidAgencyNumberEmptyMock(){
 
         return new PixKeyDTO(
+                UUID.randomUUID(),
                 KeyTypeDTO.CPF,
                 "37819393831",
                 AccountTypeDTO.CORRENTE,
@@ -209,6 +225,7 @@ public class PixKeyDTOMocks {
     public PixKeyDTO getInvalidAgencyNumberNullMock(){
 
         return new PixKeyDTO(
+                UUID.randomUUID(),
                 KeyTypeDTO.CPF,
                 "37819393831",
                 AccountTypeDTO.CORRENTE,
@@ -223,6 +240,7 @@ public class PixKeyDTOMocks {
     public PixKeyDTO getInvalidAccountNumberMock(){
 
         return new PixKeyDTO(
+                UUID.randomUUID(),
                 KeyTypeDTO.CPF,
                 "37819393831",
                 AccountTypeDTO.CORRENTE,
@@ -238,6 +256,7 @@ public class PixKeyDTOMocks {
     public PixKeyDTO getInvalidAccountNumberNullMock(){
 
         return new PixKeyDTO(
+                UUID.randomUUID(),
                 KeyTypeDTO.CPF,
                 "37819393831",
                 AccountTypeDTO.CORRENTE,
@@ -252,6 +271,7 @@ public class PixKeyDTOMocks {
     public PixKeyDTO getInvalidAccountNumberEmptyMock(){
 
         return new PixKeyDTO(
+                UUID.randomUUID(),
                 KeyTypeDTO.CPF,
                 "37819393831",
                 AccountTypeDTO.CORRENTE,
@@ -267,6 +287,7 @@ public class PixKeyDTOMocks {
     public PixKeyDTO getInvalidAccountHolderNameEmptyMock(){
 
         return new PixKeyDTO(
+                UUID.randomUUID(),
                 KeyTypeDTO.CPF,
                 "37819393831",
                 AccountTypeDTO.CORRENTE,
@@ -281,6 +302,7 @@ public class PixKeyDTOMocks {
     public PixKeyDTO getInvalidAccountHolderNameNullMock(){
 
         return new PixKeyDTO(
+                UUID.randomUUID(),
                 KeyTypeDTO.CPF,
                 "37819393831",
                 AccountTypeDTO.CORRENTE,
@@ -295,6 +317,7 @@ public class PixKeyDTOMocks {
     public PixKeyDTO getInvalidCPFPersonTypeErrorMock(){
 
         return new PixKeyDTO(
+                UUID.randomUUID(),
                 KeyTypeDTO.CPF,
                 "37819393831",
                 AccountTypeDTO.CORRENTE,
@@ -309,6 +332,7 @@ public class PixKeyDTOMocks {
     public PixKeyDTO getInvalidCNPJPersonTypeErrorMock(){
 
         return new PixKeyDTO(
+                UUID.randomUUID(),
                 KeyTypeDTO.CNPJ,
                 "37819393831",
                 AccountTypeDTO.CORRENTE,

@@ -10,6 +10,7 @@ import com.test.itau.chavepix.validation.query.ValidateIdQuery;
 import com.test.itau.chavepix.validation.query.ValidateNullQuery;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 @Configuration
 public class PixKeyValidationConfig {
@@ -38,6 +39,7 @@ public class PixKeyValidationConfig {
 
 
     @Bean
+    @Primary
     public PixKeyRequestValidatorHandler createRequestChain(PixKeyRepository pixKeyRepository) {
         ValidateFieldNonNull chain = new ValidateFieldNonNull("accountNumber");
 
@@ -51,6 +53,21 @@ public class PixKeyValidationConfig {
                 .setNext(new ValidateFieldRegex("accountHolderName","[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]{1,30}"))
                 .setNext(new ValidateFieldRegex("accountHolderLastName","[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]{0,30}"))
                 .setNext(new ValidatePixKeyField());
+
+        return chain;
+    }
+
+    @Bean
+    public PixKeyRequestValidatorHandler createRequestUpdateChain(PixKeyRepository pixKeyRepository) {
+        ValidateFieldNonNull chain = new ValidateFieldNonNull("accountNumber");
+
+        chain.setNext(new ValidateFieldRegex("accountNumber","[0-9]{1,8}"))
+                .setNext(new ValidateFieldNonNull("agencyNumber"))
+                .setNext(new ValidateFieldRegex("agencyNumber","[0-9]{1,4}"))
+                .setNext(new ValidateFieldNonNull("accountTypeDTO"))
+                .setNext(new ValidateFieldNonNull("accountHolderName"))
+                .setNext(new ValidateFieldRegex("accountHolderName","[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]{1,30}"))
+                .setNext(new ValidateFieldRegex("accountHolderLastName","[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]{0,30}"));
 
         return chain;
     }
