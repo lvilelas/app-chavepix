@@ -39,13 +39,17 @@ public class PixKeyValidationConfig {
 
     @Bean
     public PixKeyRequestValidatorHandler createRequestChain(PixKeyRepository pixKeyRepository) {
-        ValidateRequiredFieldRegex chain = new ValidateRequiredFieldRegex("accountNumber","[0-9]{1,8}");
+        ValidateFieldNonNull chain = new ValidateFieldNonNull("accountNumber");
 
-        chain.setNext(new ValidateRequiredFieldRegex("agencyNumber","[0-9]{1,4}"))
-                .setNext(new ValidateRequiredField("personTypeDTO"))
-                .setNext(new ValidateRequiredField("accountTypeDTO"))
-                .setNext(new ValidateRequiredField("keyTypeDTO"))
-                .setNext(new ValidateRequiredField("accountHolderName"))
+        chain.setNext(new ValidateFieldRegex("accountNumber","[0-9]{1,8}"))
+                .setNext(new ValidateFieldNonNull("agencyNumber"))
+                .setNext(new ValidateFieldRegex("agencyNumber","[0-9]{1,4}"))
+                .setNext(new ValidateFieldNonNull("personTypeDTO"))
+                .setNext(new ValidateFieldNonNull("accountTypeDTO"))
+                .setNext(new ValidateFieldNonNull("keyTypeDTO"))
+                .setNext(new ValidateFieldNonNull("accountHolderName"))
+                .setNext(new ValidateFieldRegex("accountHolderName","[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]{1,30}"))
+                .setNext(new ValidateFieldRegex("accountHolderLastName","[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]{0,30}"))
                 .setNext(new ValidatePixKeyField());
 
         return chain;

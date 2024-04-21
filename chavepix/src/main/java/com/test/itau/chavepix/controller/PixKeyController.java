@@ -1,9 +1,6 @@
 package com.test.itau.chavepix.controller;
 
-import com.test.itau.chavepix.dto.PixKeyDTO;
-import com.test.itau.chavepix.dto.PixKeyOutDTO;
-import com.test.itau.chavepix.dto.PixKeyQueryDTO;
-import com.test.itau.chavepix.dto.PixQueryOutDTO;
+import com.test.itau.chavepix.dto.*;
 
 import com.test.itau.chavepix.service.PixKeysService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +31,14 @@ public class PixKeyController {
 
         return pixKeysService.searchPixKey(new PixKeyQueryDTO(id,keyTYpe,agencyNumber,accountNumber,accountHolderName));
     }
+
+    @DeleteMapping("/delete_pix_key/{id}")
+    public PixKeyDeleteOutDTO deletePixKey(@PathVariable UUID id){
+
+        return pixKeysService.deletePixKey(id);
+    }
+
+
 }
 
 

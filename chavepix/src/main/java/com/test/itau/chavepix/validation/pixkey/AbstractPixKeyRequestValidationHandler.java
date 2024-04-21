@@ -33,4 +33,7 @@ public abstract class AbstractPixKeyRequestValidationHandler implements PixKeyRe
 
     protected abstract void validate(PixKeyDTO pixKey);
 
+    protected Object getFieldValue(PixKeyDTO pixKey, String fieldName) throws NoSuchFieldException, IllegalAccessException {
+        return reflectionAttributeMapper.getFieldValue(pixKey, fieldName);
+    }
 }

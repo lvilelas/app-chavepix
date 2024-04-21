@@ -3,11 +3,8 @@ package com.test.itau.chavepix.service;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.test.itau.chavepix.dto.PixKeyOutDTO;
-import com.test.itau.chavepix.dto.PixKeyQueryDTO;
-import com.test.itau.chavepix.dto.PixQueryOutDTO;
+import com.test.itau.chavepix.dto.*;
 import com.test.itau.chavepix.model.AccountPixKeysModel;
-import com.test.itau.chavepix.dto.PixKeyDTO;
 import com.test.itau.chavepix.model.KeyTypeModel;
 import com.test.itau.chavepix.model.PersonTypeModel;
 import com.test.itau.chavepix.model.PixKeyModel;
@@ -17,10 +14,14 @@ import com.test.itau.chavepix.validation.handler.PixKeyQueryValidationHandler;
 import com.test.itau.chavepix.validation.handler.PixKeyRequestValidatorHandler;
 import com.test.itau.chavepix.validation.handler.PixKeyValidationHandler;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.NotReadablePropertyException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,6 +38,8 @@ public class PixKeysService {
         pixKeyRequestValidatorHandler.validateRequest(pixKeyDTO);
         AccountPixKeysModel accountPixKeys = findByAccountAndAgency(pixKeyDTO.getAgencyNumber(), pixKeyDTO.getAccountNumber());
         pixKeyValidationHandler.validatePixKey(accountPixKeys,pixKeyDTO);
+        PixKeyEntity pixKeyEntity = new PixKeyEntity(pixKeyDTO);
+        pixKeyEntity.setDateTimeCreation(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
 
         return new PixKeyOutDTO(pixKeyRepository.save(new PixKeyEntity(pixKeyDTO)));
     }
@@ -53,6 +56,24 @@ public class PixKeysService {
                 .map(PixQueryOutDTO::new)
                 .collect(Collectors.toList());
     }
+
+    public PixKeyDeleteOutDTO deletePixKey(UUID id) {
+        PixKeyEntity pixKeyEntity = pixKeyRepository.findById(id).orElse(null);
+
+        if(pixKeyEntity == null) {
+            throw new NotReadablePropertyException(UUID.class,"ID " + id + " not found");
+        }
+        if(pixKeyEntity.getDateTimeDelete() != null){
+            throw new RuntimeException("pix key alreay deleted");
+        }
+
+        pixKeyEntity.setDateTimeDelete(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
+        pixKeyRepository.save(pixKeyEntity);
+
+        return new PixKeyDeleteOutDTO(pixKeyEntity);
+
+    }
+
 
     private AccountPixKeysModel findByAccountAndAgency(String agencyNumber, String accountNumber) {
         List<PixKeyEntity> pixKeys = pixKeyRepository.findByAgencyNumberAndAccountNumber(agencyNumber, accountNumber);
@@ -81,5 +102,4 @@ public class PixKeysService {
 
         return map;
     }
-
 }
