@@ -27,13 +27,13 @@ public class PixKeyControllerTest  extends PixKeyDTOMocks {
 
     @Test
     public void shouldCreatePixKey() throws Exception {
-        mockMvc.perform(post("/pix_key/create_pixKey").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/pix_key/create_pix_key").contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(getValidCPFPixKeyMock())))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void shoudGetErrorInvalidField() throws Exception {
+    public void shouldGetErrorInvalidField() throws Exception {
                mockMvc.perform(post("/pix_key/create_pixKey").contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(getInvalidPixKeyValueCPF())))
                 .andExpect(status().is4xxClientError());

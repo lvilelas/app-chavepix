@@ -48,6 +48,10 @@ public class PixKeyEntity {
     @CreationTimestamp
     private LocalDateTime dateTimeCreation;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime dateTimeDelete;
+
+
     public PixKeyEntity(PixKeyDTO pixKeyDTO) {
         this.keyTypeEntity = KeyTypeEntity.valueOf(pixKeyDTO.getKeyTypeDTO().name());
         this.keyValue = pixKeyDTO.getKeyValue();

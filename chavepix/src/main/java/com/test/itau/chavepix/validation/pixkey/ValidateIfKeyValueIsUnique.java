@@ -1,9 +1,8 @@
-package com.test.itau.chavepix.validation;
+package com.test.itau.chavepix.validation.pixkey;
 
 import com.test.itau.chavepix.dto.PixKeyDTO;
 import com.test.itau.chavepix.model.AccountPixKeysModel;
 import com.test.itau.chavepix.persistence.repository.PixKeyRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class ValidateIfKeyValueIsUnique extends AbstractPixKeyValidationHandler {
 
@@ -14,7 +13,7 @@ public class ValidateIfKeyValueIsUnique extends AbstractPixKeyValidationHandler 
     }
 
     @Override
-    protected void validate(AccountPixKeysModel accountPixKeys, PixKeyDTO pixKey) {
+    public void validate(AccountPixKeysModel accountPixKeys, PixKeyDTO pixKey) {
         if(pixKeyRepository.existsByKeyValue(pixKey.getKeyValue())){
             throw new RuntimeException("Pix Keys Not Unique");
         }
