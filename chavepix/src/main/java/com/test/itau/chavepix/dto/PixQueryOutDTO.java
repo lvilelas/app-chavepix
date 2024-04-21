@@ -47,19 +47,19 @@ public class PixQueryOutDTO {
     private LocalDateTime dateTimeCreation;
 
     @JsonProperty("data_exclusao")
-    private LocalDateTime dateTimeDelete;
+    private String dateTimeDelete;
 
-    public PixQueryOutDTO(PixKeyEntity pixKeyDTO) {
-        this.id = pixKeyDTO.getId();
-        this.keyTypeDTO = KeyTypeDTO.valueOf(pixKeyDTO.getKeyTypeEntity().name());
-        this.keyValue = pixKeyDTO.getKeyValue();
-        this.accountTypeDTO = AccountTypeDTO.valueOf(pixKeyDTO.getAccountTypeEntity().name());
-        this.personTypeDTO = PersonTypeDTO.valueOf(pixKeyDTO.getPersonTypeEntity().name());
-        this.agencyNumber = pixKeyDTO.getAgencyNumber();
-        this.accountNumber = pixKeyDTO.getAccountNumber();
-        this.accountHolderName = pixKeyDTO.getAccountHolderName();
-        this.accountHolderLastName = pixKeyDTO.getAccountHolderLastName();
-        this.dateTimeCreation = pixKeyDTO.getDateTimeCreation();
-        this.dateTimeDelete = pixKeyDTO.getDateTimeDelete();
+    public PixQueryOutDTO(PixKeyEntity pixKeyEntity) {
+        this.id = pixKeyEntity.getId();
+        this.keyTypeDTO = KeyTypeDTO.valueOf(pixKeyEntity.getKeyTypeEntity().name());
+        this.keyValue = pixKeyEntity.getKeyValue();
+        this.accountTypeDTO = AccountTypeDTO.valueOf(pixKeyEntity.getAccountTypeEntity().name());
+        this.personTypeDTO = PersonTypeDTO.valueOf(pixKeyEntity.getPersonTypeEntity().name());
+        this.agencyNumber = pixKeyEntity.getAgencyNumber();
+        this.accountNumber = pixKeyEntity.getAccountNumber();
+        this.accountHolderName = pixKeyEntity.getAccountHolderName();
+        this.accountHolderLastName = pixKeyEntity.getAccountHolderLastName() == null ? "" : pixKeyEntity.getAccountHolderLastName();
+        this.dateTimeCreation = pixKeyEntity.getDateTimeCreation();
+        this.dateTimeDelete = pixKeyEntity.getDateTimeDelete()==null ? "" : pixKeyEntity.getDateTimeCreation().toString();
     }
 }

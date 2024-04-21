@@ -43,7 +43,7 @@ public class PixKeyOutDTO {
     private String accountHolderLastName;
 
     @JsonProperty("data_inclusao")
-    private LocalDateTime dateTimeCreation;
+    private String dateTimeCreation;
 
 
     public PixKeyOutDTO(PixKeyEntity pixKeyEntity) {
@@ -56,6 +56,6 @@ public class PixKeyOutDTO {
         this.accountNumber = pixKeyEntity.getAccountNumber();
         this.accountHolderName = pixKeyEntity.getAccountHolderName();
         this.accountHolderLastName = pixKeyEntity.getAccountHolderLastName();
-        this.dateTimeCreation = pixKeyEntity.getDateTimeCreation();
+        this.dateTimeCreation = pixKeyEntity.getDateTimeCreation().toString();
     }
 }

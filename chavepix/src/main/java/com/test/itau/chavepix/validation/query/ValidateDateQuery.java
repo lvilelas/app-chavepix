@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class ValidateDateQuery extends AbstractPixKeyQueryValidationHandler{
     @Override
-    protected void validate(Map<String, String> map) {
+    public void validate(Map<String, String> map) {
         if(map.isEmpty()){
             throw new RuntimeException("None parameter send");
         }

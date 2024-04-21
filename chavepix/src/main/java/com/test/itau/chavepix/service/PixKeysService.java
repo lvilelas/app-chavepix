@@ -14,11 +14,11 @@ import com.test.itau.chavepix.model.PixKeyModel;
 import com.test.itau.chavepix.persistence.entity.PixKeyEntity;
 import com.test.itau.chavepix.persistence.repository.PixKeyRepository;
 import com.test.itau.chavepix.validation.handler.PixKeyQueryValidationHandler;
+import com.test.itau.chavepix.validation.handler.PixKeyRequestValidatorHandler;
 import com.test.itau.chavepix.validation.handler.PixKeyValidationHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -30,9 +30,11 @@ public class PixKeysService {
     private final PixKeyRepository pixKeyRepository;
     private final PixKeyValidationHandler pixKeyValidationHandler;
     private final PixKeyQueryValidationHandler pixKeyQueryValidationHandler;
+    private final PixKeyRequestValidatorHandler pixKeyRequestValidatorHandler;
 
     public PixKeyOutDTO createPixKey(PixKeyDTO pixKeyDTO) {
 
+        pixKeyRequestValidatorHandler.validateRequest(pixKeyDTO);
         AccountPixKeysModel accountPixKeys = findByAccountAndAgency(pixKeyDTO.getAgencyNumber(), pixKeyDTO.getAccountNumber());
         pixKeyValidationHandler.validatePixKey(accountPixKeys,pixKeyDTO);
 
@@ -45,7 +47,7 @@ public class PixKeysService {
         Map<String,String> map = convertTOMap(pixKeyQueryDTO);
         pixKeyQueryValidationHandler.validatePixKeyQuery(map);
 
-        List<PixKeyEntity> pixKeys =  pixKeyRepository.findCustom(pixKeyQueryDTO.getId(),pixKeyQueryDTO.getKeyTYpe(),pixKeyQueryDTO.getAgencyNumber(), pixKeyQueryDTO.getAccountNumber(), pixKeyQueryDTO.getAccountHolderName());
+        List<PixKeyEntity> pixKeys =  pixKeyRepository.findCustom(pixKeyQueryDTO.getId(),pixKeyQueryDTO.getKeyType(),pixKeyQueryDTO.getAgencyNumber(), pixKeyQueryDTO.getAccountNumber(), pixKeyQueryDTO.getAccountHolderName());
 
         return  pixKeys.stream()
                 .map(PixQueryOutDTO::new)

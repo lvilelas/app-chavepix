@@ -11,7 +11,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class PixKeyQueryDTO {
     private UUID id;
-    private String keyTYpe;
+    private String keyType;
     private String agencyNumber;
     private String accountNumber;
     private String accountHolderName;
