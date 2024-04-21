@@ -1,18 +1,16 @@
 package com.test.itau.chavepix.dto;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.test.itau.chavepix.persistence.entity.PixKeyEntity;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
 @Setter
-@AllArgsConstructor
-public class PixQueryOutDTO {
+public class PixKeyDeleteOutDTO {
 
     private UUID id;
 
@@ -44,12 +42,12 @@ public class PixQueryOutDTO {
     private String accountHolderLastName;
 
     @JsonProperty("data_inclusao")
-    private LocalDateTime dateTimeCreation;
+    private String dateTimeCreation;
 
     @JsonProperty("data_exclusao")
     private String dateTimeDelete;
 
-    public PixQueryOutDTO(PixKeyEntity pixKeyEntity) {
+    public PixKeyDeleteOutDTO(PixKeyEntity pixKeyEntity) {
         this.id = pixKeyEntity.getId();
         this.keyTypeDTO = KeyTypeDTO.valueOf(pixKeyEntity.getKeyTypeEntity().name());
         this.keyValue = pixKeyEntity.getKeyValue();
@@ -58,8 +56,8 @@ public class PixQueryOutDTO {
         this.agencyNumber = pixKeyEntity.getAgencyNumber();
         this.accountNumber = pixKeyEntity.getAccountNumber();
         this.accountHolderName = pixKeyEntity.getAccountHolderName();
-        this.accountHolderLastName = pixKeyEntity.getAccountHolderLastName() == null ? "" : pixKeyEntity.getAccountHolderLastName();
-        this.dateTimeCreation = pixKeyEntity.getDateTimeCreation();
-        this.dateTimeDelete = pixKeyEntity.getDateTimeDelete()==null ? "" : pixKeyEntity.getDateTimeDelete().toString();
+        this.accountHolderLastName = pixKeyEntity.getAccountHolderLastName();
+        this.dateTimeCreation = pixKeyEntity.getDateTimeCreation().toString();
+        this.dateTimeDelete = pixKeyEntity.getDateTimeDelete().toString();
     }
 }
