@@ -15,6 +15,8 @@ import com.test.itau.chavepix.validation.handler.PixKeyRequestValidatorHandler;
 import com.test.itau.chavepix.validation.handler.PixKeyValidationHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.NotReadablePropertyException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -28,10 +30,23 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PixKeysService {
 
-    private final PixKeyRepository pixKeyRepository;
-    private final PixKeyValidationHandler pixKeyValidationHandler;
-    private final PixKeyQueryValidationHandler pixKeyQueryValidationHandler;
-    private final PixKeyRequestValidatorHandler pixKeyRequestValidatorHandler;
+    @Autowired
+    private PixKeyRepository pixKeyRepository;
+
+    @Autowired
+    private PixKeyValidationHandler pixKeyValidationHandler;
+
+    @Autowired
+    private PixKeyQueryValidationHandler pixKeyQueryValidationHandler;
+
+    @Autowired
+    @Qualifier("createRequestChain")
+    private PixKeyRequestValidatorHandler pixKeyRequestValidatorHandler;
+
+    @Autowired
+    @Qualifier("createRequestUpdateChain")
+    private PixKeyRequestValidatorHandler pixKeyRequestUpdateValidatorHandler;
+
 
     public PixKeyOutDTO createPixKey(PixKeyDTO pixKeyDTO) {
 
@@ -40,6 +55,7 @@ public class PixKeysService {
         pixKeyValidationHandler.validatePixKey(accountPixKeys,pixKeyDTO);
         PixKeyEntity pixKeyEntity = new PixKeyEntity(pixKeyDTO);
         pixKeyEntity.setDateTimeCreation(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
+
 
         return new PixKeyOutDTO(pixKeyRepository.save(new PixKeyEntity(pixKeyDTO)));
     }
@@ -57,21 +73,39 @@ public class PixKeysService {
                 .collect(Collectors.toList());
     }
 
+
+    public PixKeyOutDTO updatePixKey(PixKeyDTO pixKeyDTO) {
+        pixKeyRequestUpdateValidatorHandler.validateRequest(pixKeyDTO);
+
+        PixKeyEntity pixKeyEntity = pixKeyRepository.findById(pixKeyDTO.getId()).orElse(null);
+
+        validateNonNullAndExists(pixKeyEntity,pixKeyDTO.getId());
+
+        pixKeyEntity.updatePixKey(pixKeyDTO);
+
+        return new PixKeyOutDTO(pixKeyRepository.save(pixKeyEntity));
+    }
+
     public PixKeyDeleteOutDTO deletePixKey(UUID id) {
         PixKeyEntity pixKeyEntity = pixKeyRepository.findById(id).orElse(null);
 
-        if(pixKeyEntity == null) {
-            throw new NotReadablePropertyException(UUID.class,"ID " + id + " not found");
-        }
-        if(pixKeyEntity.getDateTimeDelete() != null){
-            throw new RuntimeException("pix key alreay deleted");
-        }
+        validateNonNullAndExists(pixKeyEntity,id);
 
         pixKeyEntity.setDateTimeDelete(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
         pixKeyRepository.save(pixKeyEntity);
 
         return new PixKeyDeleteOutDTO(pixKeyEntity);
 
+    }
+
+
+    private void validateNonNullAndExists(PixKeyEntity pixKeyEntity, UUID id){
+        if(pixKeyEntity == null) {
+            throw new NotReadablePropertyException(UUID.class,"ID " + id + " not found");
+        }
+        if(pixKeyEntity.getDateTimeDelete() != null){
+            throw new RuntimeException("pix key alreay deleted");
+        }
     }
 
 
@@ -102,4 +136,5 @@ public class PixKeysService {
 
         return map;
     }
+
 }
