@@ -2,6 +2,7 @@ package com.test.itau.chavepix.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -10,6 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Getter
@@ -48,5 +50,14 @@ public class PixKeyDTO {
 
     @JsonProperty("sobrenome_correntista")
     private String accountHolderLastName;
+
+
+    public String getAgencyNumber() {
+        return new BigDecimal(agencyNumber).toString();
+    }
+
+    public String getAccountNumber() {
+        return new BigDecimal(accountNumber).toString();
+    }
 
 }
