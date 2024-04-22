@@ -1,4 +1,5 @@
 package com.test.itau.chavepix.validation;
+import com.test.itau.chavepix.exceptions.InvalidBusinessRule;
 import com.test.itau.chavepix.mocks.AccountPixKeysModelMocks;
 import com.test.itau.chavepix.validation.pixkey.ValidateIfDocumentsAlreayExist;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,7 @@ public class ValidateIfDocumentsAlreayExistTest extends AccountPixKeysModelMocks
     public void testValidateIfDocumentsAlreayExist() {
         ValidateIfDocumentsAlreayExist validator = new ValidateIfDocumentsAlreayExist();
 
-        assertThrows(RuntimeException.class, () -> {
+        assertThrows(InvalidBusinessRule.class, () -> {
             validator.validate(getValidAccountCPFPixKeysModelMock(), getValidCPFPixKeyMock());
         });
     }

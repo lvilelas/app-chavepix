@@ -1,6 +1,7 @@
 package com.test.itau.chavepix.validation.pixkey;
 
 import com.test.itau.chavepix.dto.PixKeyDTO;
+import com.test.itau.chavepix.exceptions.InvalidFieldException;
 import org.springframework.beans.NotReadablePropertyException;
 
 public class ValidateFieldRegex extends AbstractPixKeyRequestValidationHandler{
@@ -20,11 +21,11 @@ public class ValidateFieldRegex extends AbstractPixKeyRequestValidationHandler{
         try {
             String requiredField = (String) reflectionAttributeMapper.getFieldValue(pixKey,field);
             if(requiredField!=null && !requiredField.matches(regex)){
-                throw new NotReadablePropertyException(PixKeyDTO.class,field + " key is not valid");
+                throw new InvalidFieldException(field);
             }
 
         } catch (Exception e) {
-            throw new NotReadablePropertyException(PixKeyDTO.class,field + " key is not valid");
+            throw new InvalidFieldException(field);
         }
     }
 }

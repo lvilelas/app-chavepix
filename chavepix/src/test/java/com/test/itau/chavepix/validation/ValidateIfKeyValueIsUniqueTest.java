@@ -1,5 +1,6 @@
 package com.test.itau.chavepix.validation;
 
+import com.test.itau.chavepix.exceptions.InvalidBusinessRule;
 import com.test.itau.chavepix.mocks.AccountPixKeysModelMocks;
 import com.test.itau.chavepix.persistence.repository.PixKeyRepository;
 import com.test.itau.chavepix.validation.pixkey.ValidateIfKeyValueIsUnique;
@@ -17,7 +18,7 @@ public class ValidateIfKeyValueIsUniqueTest extends AccountPixKeysModelMocks {
 
         ValidateIfKeyValueIsUnique validator = new ValidateIfKeyValueIsUnique(pixKeyRepository);
 
-        assertThrows(RuntimeException.class, () -> {
+        assertThrows(InvalidBusinessRule.class, () -> {
             validator.validate(getValidAccountCPFPixKeysModelMock(), getValidCPFPixKeyMock());
         });
     }

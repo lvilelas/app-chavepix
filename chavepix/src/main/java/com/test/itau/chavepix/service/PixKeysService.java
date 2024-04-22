@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.itau.chavepix.dto.*;
+import com.test.itau.chavepix.exceptions.InvalidBusinessRule;
+import com.test.itau.chavepix.exceptions.PixKeyNotFoundException;
 import com.test.itau.chavepix.model.AccountPixKeysModel;
 import com.test.itau.chavepix.model.KeyTypeModel;
 import com.test.itau.chavepix.model.PersonTypeModel;
@@ -13,6 +15,7 @@ import com.test.itau.chavepix.persistence.repository.PixKeyRepository;
 import com.test.itau.chavepix.validation.handler.PixKeyQueryValidationHandler;
 import com.test.itau.chavepix.validation.handler.PixKeyRequestValidatorHandler;
 import com.test.itau.chavepix.validation.handler.PixKeyValidationHandler;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.NotReadablePropertyException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,13 +64,16 @@ public class PixKeysService {
     }
 
 
-    public List<PixQueryOutDTO> searchPixKey(PixKeyQueryDTO pixKeyQueryDTO) {
+    public List<PixQueryOutDTO> searchPixKey(PixKeyQueryDTO pixKeyQueryDTO, HttpServletResponse response) {
 
         Map<String,String> map = convertTOMap(pixKeyQueryDTO);
         pixKeyQueryValidationHandler.validatePixKeyQuery(map);
 
         List<PixKeyEntity> pixKeys =  pixKeyRepository.findCustom(pixKeyQueryDTO.getId(),pixKeyQueryDTO.getKeyType(),pixKeyQueryDTO.getAgencyNumber(), pixKeyQueryDTO.getAccountNumber(), pixKeyQueryDTO.getAccountHolderName());
 
+        if(pixKeys.isEmpty()){
+            response.setStatus(404);
+        }
         return  pixKeys.stream()
                 .map(PixQueryOutDTO::new)
                 .collect(Collectors.toList());
@@ -101,10 +107,10 @@ public class PixKeysService {
 
     private void validateNonNullAndExists(PixKeyEntity pixKeyEntity, UUID id){
         if(pixKeyEntity == null) {
-            throw new NotReadablePropertyException(UUID.class,"ID " + id + " not found");
+            throw new PixKeyNotFoundException("ID " + id + " not found");
         }
         if(pixKeyEntity.getDateTimeDelete() != null){
-            throw new RuntimeException("pix key alreay deleted");
+            throw new InvalidBusinessRule("pix key alreay deleted");
         }
     }
 

@@ -1,4 +1,5 @@
 package com.test.itau.chavepix.validation;
+import com.test.itau.chavepix.exceptions.InvalidBusinessRule;
 import com.test.itau.chavepix.validation.pixkey.ValidatePixKeyField;
 import com.test.itau.chavepix.validation.query.ValidateIdQuery;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +27,7 @@ public class ValidateIdQueryTest {
         params.put("id", "123");
         params.put("otherParam", "value");
 
-        assertThrows(RuntimeException.class, () -> validator.validate(params));
+        assertThrows(InvalidBusinessRule.class, () -> validator.validate(params));
     }
 
     @Test

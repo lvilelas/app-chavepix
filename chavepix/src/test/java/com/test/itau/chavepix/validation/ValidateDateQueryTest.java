@@ -1,4 +1,5 @@
 package com.test.itau.chavepix.validation;
+import com.test.itau.chavepix.exceptions.InvalidBusinessRule;
 import com.test.itau.chavepix.validation.pixkey.ValidatePixKeyField;
 import com.test.itau.chavepix.validation.query.ValidateDateQuery;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +22,7 @@ public class ValidateDateQueryTest {
     @Test
     void testValidate_EmptyMap() {
         Map<String, String> emptyMap = new HashMap<>();
-        assertThrows(RuntimeException.class, () -> validator.validate(emptyMap));
+        assertThrows(InvalidBusinessRule.class, () -> validator.validate(emptyMap));
     }
 
     @Test
