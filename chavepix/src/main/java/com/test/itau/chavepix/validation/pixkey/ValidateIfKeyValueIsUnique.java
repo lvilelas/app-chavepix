@@ -15,7 +15,7 @@ public class ValidateIfKeyValueIsUnique extends AbstractPixKeyValidationHandler 
 
     @Override
     public void validate(AccountPixKeysModel accountPixKeys, PixKeyDTO pixKey) {
-        if(pixKeyRepository.existsByKeyValue(pixKey.getKeyValue())){
+        if(pixKeyRepository.existsByKeyValueAndDateTimeDeleteIsNull(pixKey.getKeyValue())){
             throw new InvalidBusinessRule("Pix Keys Not Unique");
         }
     }

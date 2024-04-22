@@ -14,7 +14,7 @@ public class ValidateIfKeyValueIsUniqueTest extends AccountPixKeysModelMocks {
     @Test
     public void testValidateIfKeyValueIsUnique() {
         PixKeyRepository pixKeyRepository = mock(PixKeyRepository.class);
-        when(pixKeyRepository.existsByKeyValue(anyString())).thenReturn(true); // Assuming the key value already exists
+        when(pixKeyRepository.existsByKeyValueAndDateTimeDeleteIsNull(anyString())).thenReturn(true); // Assuming the key value already exists
 
         ValidateIfKeyValueIsUnique validator = new ValidateIfKeyValueIsUnique(pixKeyRepository);
 
