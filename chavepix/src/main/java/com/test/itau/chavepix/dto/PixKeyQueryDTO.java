@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Getter
@@ -17,6 +18,15 @@ public class PixKeyQueryDTO {
     private String agencyNumber;
     private String accountNumber;
     private String accountHolderName;
+
+
+    public String getAgencyNumber() {
+        return agencyNumber==null? agencyNumber: new BigDecimal(agencyNumber).toString();
+    }
+
+    public String getAccountNumber() {
+        return accountNumber==null? accountNumber: new BigDecimal(accountNumber).toString();
+    }
 }
 
 
