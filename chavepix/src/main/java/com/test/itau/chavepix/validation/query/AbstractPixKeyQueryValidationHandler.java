@@ -1,7 +1,5 @@
 package com.test.itau.chavepix.validation.query;
 
-import com.test.itau.chavepix.dto.PixKeyDTO;
-import com.test.itau.chavepix.model.AccountPixKeysModel;
 import com.test.itau.chavepix.validation.handler.PixKeyQueryValidationHandler;
 
 import java.util.Map;

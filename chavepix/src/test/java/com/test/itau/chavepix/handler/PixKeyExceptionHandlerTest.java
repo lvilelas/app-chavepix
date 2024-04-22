@@ -5,8 +5,6 @@ import com.test.itau.chavepix.exceptions.InvalidFieldException;
 import com.test.itau.chavepix.exceptions.PixKeyNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.NotReadablePropertyException;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
