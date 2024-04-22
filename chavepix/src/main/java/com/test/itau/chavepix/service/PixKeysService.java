@@ -16,6 +16,7 @@ import com.test.itau.chavepix.persistence.repository.PixKeyRepository;
 import com.test.itau.chavepix.validation.handler.PixKeyQueryValidationHandler;
 import com.test.itau.chavepix.validation.handler.PixKeyRequestValidatorHandler;
 import com.test.itau.chavepix.validation.handler.PixKeyValidationHandler;
+import com.test.itau.chavepix.validation.pixkey.ValidatePixKeyCountLimit;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -92,6 +93,8 @@ public class PixKeysService {
         pixKeyRequestUpdateValidatorHandler.validateRequest(pixKeyDTO);
 
         PixKeyEntity pixKeyEntity = pixKeyRepository.findById(pixKeyDTO.getId()).orElse(null);
+        AccountPixKeysModel accountPixKeys = findByAccountAndAgency(pixKeyDTO.getAgencyNumber(), pixKeyDTO.getAccountNumber());
+        new ValidatePixKeyCountLimit().validate(accountPixKeys,pixKeyDTO);
 
         validateNonNullAndExists(pixKeyEntity,pixKeyDTO.getId());
 
