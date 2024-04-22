@@ -1,6 +1,6 @@
 package com.test.itau.chavepix.validation;
+
 import com.test.itau.chavepix.exceptions.InvalidBusinessRule;
-import com.test.itau.chavepix.validation.pixkey.ValidatePixKeyField;
 import com.test.itau.chavepix.validation.query.ValidateIdQuery;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

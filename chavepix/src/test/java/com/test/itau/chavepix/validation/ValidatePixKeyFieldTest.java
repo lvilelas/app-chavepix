@@ -1,6 +1,5 @@
 package com.test.itau.chavepix.validation;
-import com.test.itau.chavepix.dto.PixKeyDTO;
-import com.test.itau.chavepix.dto.KeyTypeDTO;
+
 import com.test.itau.chavepix.exceptions.InvalidFieldException;
 import com.test.itau.chavepix.mocks.PixKeyDTOMocks;
 import com.test.itau.chavepix.validation.pixkey.ValidatePixKeyField;

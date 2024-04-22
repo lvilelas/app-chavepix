@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class ValidatePixKeyTypeTest extends AccountPixKeysModelMocks {
+public class     ValidatePixKeyTypeTest extends AccountPixKeysModelMocks {
 
     @Test
     public void testValidatePixKeyTypeWithInvalidPersonType(){
