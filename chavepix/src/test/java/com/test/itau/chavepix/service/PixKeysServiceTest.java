@@ -4,10 +4,10 @@ import com.test.itau.chavepix.dto.PixKeyDTO;
 import com.test.itau.chavepix.dto.PixKeyDeleteOutDTO;
 import com.test.itau.chavepix.dto.PixKeyQueryDTO;
 import com.test.itau.chavepix.dto.PixQueryOutDTO;
+import com.test.itau.chavepix.exceptions.InvalidFieldException;
+import com.test.itau.chavepix.exceptions.PixKeyNotFoundException;
 import com.test.itau.chavepix.mocks.PixKeyDTOMocks;
 import com.test.itau.chavepix.model.AccountPixKeysModel;
-import com.test.itau.chavepix.model.KeyTypeModel;
-import com.test.itau.chavepix.model.PixKeyModel;
 import com.test.itau.chavepix.persistence.entity.PixKeyEntity;
 import com.test.itau.chavepix.persistence.repository.PixKeyRepository;
 import com.test.itau.chavepix.validation.handler.PixKeyQueryValidationHandler;
@@ -15,18 +15,12 @@ import com.test.itau.chavepix.validation.handler.PixKeyRequestValidatorHandler;
 import com.test.itau.chavepix.validation.handler.PixKeyValidationHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.NotReadablePropertyException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.test.context.ContextConfiguration;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -108,7 +102,7 @@ public class PixKeysServiceTest extends PixKeyDTOMocks {
         expectedOutput.add(new PixQueryOutDTO(pixKeyEntity));
 
         // Performing the test
-        List<PixQueryOutDTO> result = pixKeysService.searchPixKey(pixKeyQueryDTO);
+        List<PixQueryOutDTO> result = pixKeysService.searchPixKey(pixKeyQueryDTO,null);
 
         // Verifying the result
         assertEquals(expectedOutput.size(), result.size());
@@ -149,7 +143,7 @@ public class PixKeysServiceTest extends PixKeyDTOMocks {
         when(pixKeyRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
 
         // Performing the test and verifying the exception
-        assertThrows(NotReadablePropertyException.class, () -> pixKeysService.deletePixKey(UUID.randomUUID()));
+        assertThrows(PixKeyNotFoundException.class, () -> pixKeysService.deletePixKey(UUID.randomUUID()));
 
         // Verifying repository interactions
         verify(pixKeyRepository, times(1)).findById(any(UUID.class));

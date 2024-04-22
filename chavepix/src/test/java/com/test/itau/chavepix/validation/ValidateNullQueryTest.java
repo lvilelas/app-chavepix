@@ -1,4 +1,5 @@
 package com.test.itau.chavepix.validation;
+import com.test.itau.chavepix.exceptions.InvalidBusinessRule;
 import com.test.itau.chavepix.validation.query.ValidateIdQuery;
 import com.test.itau.chavepix.validation.query.ValidateNullQuery;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +27,7 @@ public class ValidateNullQueryTest {
         params.put("data_inclusao", "2022-04-28");
         params.put("data_exclusao", "2022-04-30");
 
-        assertThrows(RuntimeException.class, () -> validator.validate(params));
+        assertThrows(InvalidBusinessRule.class, () -> validator.validate(params));
     }
 
     @Test

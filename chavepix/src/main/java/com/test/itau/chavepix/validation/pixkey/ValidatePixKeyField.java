@@ -1,6 +1,7 @@
 package com.test.itau.chavepix.validation.pixkey;
 
 import com.test.itau.chavepix.dto.PixKeyDTO;
+import com.test.itau.chavepix.exceptions.InvalidFieldException;
 import com.test.itau.chavepix.helper.CPFCNPJHelper;
 import org.springframework.beans.NotReadablePropertyException;
 
@@ -8,7 +9,7 @@ public class ValidatePixKeyField extends AbstractPixKeyRequestValidationHandler{
     @Override
     public void validate(PixKeyDTO pixKey) {
         if(!hasValidPixKey(pixKey)){
-            throw new NotReadablePropertyException(PixKeyDTO.class,"pix key is not valid");
+            throw new InvalidFieldException("pix key value");
         }
     }
 

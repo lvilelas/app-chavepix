@@ -1,5 +1,8 @@
 package com.test.itau.chavepix.handler;
 import com.test.itau.chavepix.dto.ErrorDTO;
+import com.test.itau.chavepix.exceptions.InvalidBusinessRule;
+import com.test.itau.chavepix.exceptions.InvalidFieldException;
+import com.test.itau.chavepix.exceptions.PixKeyNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.NotReadablePropertyException;
 import org.springframework.http.HttpStatus;
@@ -10,21 +13,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class PixKeyExceptionHandlerTest {
 
     @Test
-    public void testHandlerForNotReadablePropertyException() {
+    public void testHandlerForNotInvalidFieldException() {
         PixKeyExceptionHandler handler = new PixKeyExceptionHandler();
-        NotReadablePropertyException exception = new NotReadablePropertyException(DummyClass.class, "campoXPTO");
+        InvalidFieldException exception = new InvalidFieldException("campoXPTO");
 
         ErrorDTO result = handler.handler(exception);
 
-        assertEquals("campoXPTO",result.getMessage());
+        assertEquals("Field is not valid : campoXPTO",result.getMessage());
         assertEquals("erro na validação dos campos", result.getCause());
 
     }
 
     @Test
-    public void testHandlerForRuntimeException() {
+    public void testHandlerForInvalidBusinessRule() {
         PixKeyExceptionHandler handler = new PixKeyExceptionHandler();
-        RuntimeException exception = new RuntimeException("campoXPTO");
+        InvalidBusinessRule exception = new InvalidBusinessRule("campoXPTO");
 
         ErrorDTO result = handler.handler(exception);
 
@@ -32,6 +35,15 @@ public class PixKeyExceptionHandlerTest {
         assertEquals("regra de negocio não atendida", result.getCause());
     }
 
-    // Dummy class to simulate a property context
-    private static class DummyClass {}
+
+    public void testHandlerForPixKeyNotFoundException() {
+        PixKeyExceptionHandler handler = new PixKeyExceptionHandler();
+        PixKeyNotFoundException exception = new PixKeyNotFoundException("campoXPTO");
+
+        ErrorDTO result = handler.handler(exception);
+
+        assertEquals("campoXPTO",result.getMessage());
+        assertEquals("campoXPTO", result.getCause());
+    }
+
 }

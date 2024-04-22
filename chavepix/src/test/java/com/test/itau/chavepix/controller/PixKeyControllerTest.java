@@ -65,7 +65,7 @@ public class PixKeyControllerTest  extends PixKeyDTOMocks {
     @Test
     public void shouldSearchPixKeys() throws Exception {
         List<PixQueryOutDTO> list = new ArrayList<>();
-        when(pixKeysService.searchPixKey(new PixKeyQueryDTO(null,"cpf","1234",null,null))).thenReturn(list);
+        when(pixKeysService.searchPixKey(new PixKeyQueryDTO(null,"cpf","1234",null,null),null)).thenReturn(list);
         mockMvc.perform(get("/pix_key/search_pix_key").contentType(MediaType.APPLICATION_JSON)
                         .param("id","0685ccec-e7a3-450e-8be0-e30ebddbc7ef"))
                 .andExpect(MockMvcResultMatchers.status().isOk());

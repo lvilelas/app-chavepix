@@ -1,5 +1,6 @@
 package com.test.itau.chavepix.validation;
 import com.test.itau.chavepix.dto.PixKeyDTO;
+import com.test.itau.chavepix.exceptions.InvalidFieldException;
 import com.test.itau.chavepix.mocks.PixKeyDTOMocks;
 import com.test.itau.chavepix.validation.pixkey.ValidateFieldRegex;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,7 @@ public class ValidateFieldNonNullRegexTest extends PixKeyDTOMocks {
         ValidateFieldRegex validator = new ValidateFieldRegex("agencyNumber", "[0-9]{1,4}");
 
         // When/Then
-        assertThrows(NotReadablePropertyException.class, () -> validator.validate(pixKeyDTO));
+        assertThrows(InvalidFieldException.class, () -> validator.validate(pixKeyDTO));
     }
 
     @Test

@@ -3,6 +3,7 @@ package com.test.itau.chavepix.controller;
 import com.test.itau.chavepix.dto.*;
 
 import com.test.itau.chavepix.service.PixKeysService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,9 +33,10 @@ public class PixKeyController {
                                              @RequestParam(value="tipo_chave",required = false) String keyTYpe,
                                              @RequestParam(value="numero_agencia",required = false) String agencyNumber,
                                              @RequestParam(value="numero_conta",required = false) String accountNumber,
-                                             @RequestParam(value="nome_correntista",required = false)String accountHolderName){
+                                             @RequestParam(value="nome_correntista",required = false)String accountHolderName, HttpServletResponse response){
 
-        return pixKeysService.searchPixKey(new PixKeyQueryDTO(id,keyTYpe,agencyNumber,accountNumber,accountHolderName));
+
+        return pixKeysService.searchPixKey(new PixKeyQueryDTO(id,keyTYpe,agencyNumber,accountNumber,accountHolderName),response) ;
     }
 
     @DeleteMapping("/delete_pix_key/{id}")
