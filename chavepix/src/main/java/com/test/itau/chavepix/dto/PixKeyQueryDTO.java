@@ -21,12 +21,13 @@ public class PixKeyQueryDTO {
 
 
     public String getAgencyNumber() {
-        return agencyNumber==null? agencyNumber: new BigDecimal(agencyNumber).toString();
+        return agencyNumber!=null&&!agencyNumber.isEmpty()? new BigDecimal(agencyNumber).toString(): agencyNumber;
     }
 
     public String getAccountNumber() {
-        return accountNumber==null? accountNumber: new BigDecimal(accountNumber).toString();
+        return accountNumber!=null&&!accountNumber.isEmpty()?  new BigDecimal(accountNumber).toString():accountNumber;
     }
+
 }
 
 

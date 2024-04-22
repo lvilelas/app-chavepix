@@ -5,9 +5,9 @@ import com.test.itau.chavepix.validation.handler.PixKeyQueryValidationHandler;
 import com.test.itau.chavepix.validation.handler.PixKeyRequestValidatorHandler;
 import com.test.itau.chavepix.validation.handler.PixKeyValidationHandler;
 import com.test.itau.chavepix.validation.pixkey.*;
-import com.test.itau.chavepix.validation.query.ValidateDateQuery;
+import com.test.itau.chavepix.validation.query.ValidateEmptyQuery;
 import com.test.itau.chavepix.validation.query.ValidateIdQuery;
-import com.test.itau.chavepix.validation.query.ValidateNullQuery;
+import com.test.itau.chavepix.validation.query.ValidateDateQuery;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -16,10 +16,10 @@ import org.springframework.context.annotation.Primary;
 public class PixKeyValidationConfig {
     @Bean
     public PixKeyQueryValidationHandler createPixValidationChain() {
-        ValidateNullQuery chain = new ValidateNullQuery();
+        ValidateDateQuery chain = new ValidateDateQuery();
 
         chain.setNext(new ValidateIdQuery())
-                .setNext(new ValidateDateQuery());
+                .setNext(new ValidateEmptyQuery());
 
         return chain;
     }

@@ -7,8 +7,8 @@ import java.util.Map;
 public class ValidateDateQuery extends AbstractPixKeyQueryValidationHandler{
     @Override
     public void validate(Map<String, String> map) {
-        if(map.isEmpty()){
-            throw new InvalidBusinessRule("None parameter sent");
+        if(map.containsKey("data_inclusao") && map.containsKey("data_exclusao")){
+            throw new InvalidBusinessRule("Cannot search both parametes 'data_inclusao' and 'data_exclusao'");
         }
     }
 }
