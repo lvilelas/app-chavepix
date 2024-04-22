@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Repository
 public interface PixKeyRepository extends JpaRepository<PixKeyEntity, UUID> {
-    boolean existsByKeyValue(String keyValue);
+    boolean existsByKeyValueAndDateTimeDeleteIsNull(String keyValue);
 
     List<PixKeyEntity> findByAgencyNumberAndAccountNumber(String agencyNumber, String accountNumber);
 
