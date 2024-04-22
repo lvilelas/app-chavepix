@@ -29,7 +29,7 @@ public class PixKeyController {
     }
 
     @GetMapping("/search_pix_key")
-    public List<PixQueryOutDTO> updatePixKey(@RequestParam(value="id",required = false) UUID id,
+    public List<PixQueryOutDTO> searchPixKey(@RequestParam(value="id",required = false) UUID id,
                                              @RequestParam(value="tipo_chave",required = false) String keyTYpe,
                                              @RequestParam(value="numero_agencia",required = false) String agencyNumber,
                                              @RequestParam(value="numero_conta",required = false) String accountNumber,
