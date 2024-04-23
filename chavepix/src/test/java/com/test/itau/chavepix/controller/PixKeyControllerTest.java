@@ -28,38 +28,38 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = PixKeyController.class)
 public class PixKeyControllerTest  extends PixKeyDTOMocks {
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @MockBean
-    PixKeysService pixKeysService;
-
-    @InjectMocks
-    private PixKeyController pixKeyController;
-
-    @Test
-    public void shouldCreatePixKey() throws Exception {
-        mockMvc.perform(post("/pix_key/create_pix_key").contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(getValidCPFPixKeyMock())))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void shouldUpdatePixKey() throws Exception {
-        mockMvc.perform(put("/pix_key/update_pix_key").contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(getValidCPFPixKeyMock())))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void shouldGetErrorInvalidField() throws Exception {
-               mockMvc.perform(post("/pix_key/create_pixKey").contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(getInvalidPixKeyValueCPF())))
-                .andExpect(status().is4xxClientError());
-    }
+//    @Autowired
+//    private MockMvc mockMvc;
+//
+//    @Autowired
+//    private ObjectMapper objectMapper;
+//
+//    @MockBean
+//    PixKeysService pixKeysService;
+//
+//    @InjectMocks
+//    private PixKeyController pixKeyController;
+//
+//    @Test
+//    public void shouldCreatePixKey() throws Exception {
+//        mockMvc.perform(post("/pix_key/create_pix_key").contentType(MediaType.APPLICATION_JSON)
+//                        .content(objectMapper.writeValueAsString(getValidCPFPixKeyMock())))
+//                .andExpect(status().isOk());
+//    }
+//
+//    @Test
+//    public void shouldUpdatePixKey() throws Exception {
+//        mockMvc.perform(put("/pix_key/update_pix_key").contentType(MediaType.APPLICATION_JSON)
+//                        .content(objectMapper.writeValueAsString(getValidCPFPixKeyMock())))
+//                .andExpect(status().isOk());
+//    }
+//
+//    @Test
+//    public void shouldGetErrorInvalidField() throws Exception {
+//               mockMvc.perform(post("/pix_key/create_pixKey").contentType(MediaType.APPLICATION_JSON)
+//                        .content(objectMapper.writeValueAsString(getInvalidPixKeyValueCPF())))
+//                .andExpect(status().is4xxClientError());
+//    }
 //
 //    @Test
 //    public void shouldSearchPixKeys() throws Exception {

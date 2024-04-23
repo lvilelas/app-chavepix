@@ -4,12 +4,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.itau.chavepix.controller.PixKeyController;
-import com.test.itau.chavepix.domain.PersonType;
 import com.test.itau.chavepix.domain.PixKey;
-import com.test.itau.chavepix.dto.PersonTypeDTO;
-import com.test.itau.chavepix.dto.PixKeyOutDTO;
 import com.test.itau.chavepix.dto.PixKeyQueryDTO;
 import com.test.itau.chavepix.mapper.PixKeyMapper;
+import com.test.itau.chavepix.mapper.PixKeyUpdateMapper;
 import com.test.itau.chavepix.model.AccountPixKeysModel;
 import com.test.itau.chavepix.model.KeyTypeModel;
 import com.test.itau.chavepix.model.PersonTypeModel;
@@ -49,9 +47,9 @@ public class PixKeysService {
         businessValidation.validatePixKeyNonUnique(pixKeyRepository,pixKey);
 
         if (Objects.nonNull(accountPixKeys)) {
-            businessValidation.validateIfDocumentAlredyExists(accountPixKeys,pixKey);
+            businessValidation.validateIfDocumentAlredyExists(accountPixKeys,pixKey.getKeyType().name());
             businessValidation.validateIfKeysLimitBeenReached(accountPixKeys);
-            businessValidation.validateIfDocumentIsCorrect(accountPixKeys, pixKey);
+            businessValidation.validateIfDocumentIsCorrect(accountPixKeys, pixKey.getPersonType().name());
         }
 
         PixKeyEntity pixKeyEntity = PixKeyMapper.INSTANCE.toPixKeyEntity(pixKey);
@@ -80,18 +78,25 @@ public class PixKeysService {
 //    }
 //
 //
-//    public PixKeyOutDTO updatePixKey(PixKeyDTO pixKeyDTO) {
-//        log.info("Updating pix key: {}", pixKeyDTO);
-//        pixKeyRequestUpdateValidatorHandler.validateRequest(pixKeyDTO);
-//
-//        PixKeyEntity pixKeyEntity = pixKeyRepository.findById(pixKeyDTO.getId()).orElse(null);
-//
-//        validateNonNullAndExists(pixKeyEntity,pixKeyDTO.getId());
-//
-//        //pixKeyEntity.updatePixKey(pixKeyDTO);
-//        log.info("Pix key updated: {}", pixKeyDTO);
-//        return new PixKeyOutDTO(pixKeyRepository.save(pixKeyEntity));
-//    }
+    public PixKey updatePixKey(PixKey pixKey) {
+        log.info("Updating pix key: {}", pixKey);
+
+        PixKeyEntity pixKeyEntity = pixKeyRepository.findById(pixKey.getId()).orElse(null);
+
+        businessValidation.validateNonNull(pixKeyEntity);
+        businessValidation.validateNonDeleted(pixKeyEntity);
+
+        AccountPixKeysModel accountPixKeys = findByAccountAndAgency(pixKey.getAgencyNumber(), pixKey.getAccountNumber());
+        if(Objects.nonNull(accountPixKeys)) {
+            businessValidation.validateIfKeysLimitBeenReached(accountPixKeys);
+            businessValidation.validateIfDocumentAlredyExists(accountPixKeys,pixKeyEntity.getKeyTypeEntity().name());
+            businessValidation.validateIfDocumentIsCorrect(accountPixKeys, pixKeyEntity.getPersonTypeEntity().name());
+        }
+
+        PixKeyEntity updatedPixKeyEntity = PixKeyUpdateMapper.INSTANCE.updatePixKeyEntityFromPixKey(pixKeyEntity,pixKey);
+        log.info("Pix key updated: {}", pixKey);
+        return PixKeyMapper.INSTANCE.toPixKey(pixKeyRepository.save(updatedPixKeyEntity));
+    }
 //
 //    public PixKeyDeleteOutDTO deletePixKey(UUID id) {
 //        log.info("Deleting pix key: {}", id);
@@ -107,14 +112,7 @@ public class PixKeysService {
 //    }
 //
 //
-//    private void validateNonNullAndExists(PixKeyEntity pixKeyEntity, UUID id){
-//        if(pixKeyEntity == null) {
-//            throw new PixKeyNotFoundException("ID " + id + " not found");
-//        }
-//        if(pixKeyEntity.getDateTimeDelete() != null){
-//            throw new InvalidBusinessRule("pix key alreay deleted");
-//        }
-//    }
+
 //
 //
     private AccountPixKeysModel findByAccountAndAgency(BigInteger agencyNumber, BigInteger accountNumber) {

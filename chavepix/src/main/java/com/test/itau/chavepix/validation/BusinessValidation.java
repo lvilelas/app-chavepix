@@ -4,8 +4,12 @@ import com.test.itau.chavepix.domain.PixKey;
 import com.test.itau.chavepix.dto.PersonTypeDTO;
 import com.test.itau.chavepix.model.AccountPixKeysModel;
 import com.test.itau.chavepix.model.PersonTypeModel;
+import com.test.itau.chavepix.persistence.entity.PixKeyEntity;
 import com.test.itau.chavepix.persistence.repository.PixKeyRepository;
 import org.springframework.stereotype.Component;
+
+import java.util.Objects;
+import java.util.UUID;
 
 @Component
 public final class BusinessValidation {
@@ -16,8 +20,8 @@ public final class BusinessValidation {
         }
     }
 
-    public void validateIfDocumentAlredyExists(AccountPixKeysModel accountPixKeys, PixKey pixKey){
-        if(hasDocumentRegistered(pixKey,accountPixKeys)){
+    public void validateIfDocumentAlredyExists(AccountPixKeysModel accountPixKeys, String keyType){
+        if(hasDocumentRegistered(keyType,accountPixKeys)){
             throw new RuntimeException("document already registered");
         }
     }
@@ -28,16 +32,26 @@ public final class BusinessValidation {
         }
     }
 
-    public void validateIfDocumentIsCorrect(AccountPixKeysModel accountPixKeys,PixKey pixKey){
-        if(!pixKey.getPersonType().name().equals(accountPixKeys.getPersonType().name())){
-            throw new RuntimeException("document is not correct");
+    public void validateIfDocumentIsCorrect(AccountPixKeysModel accountPixKeys,String personType){
+        if(!personType.equals(accountPixKeys.getPersonType().name())){
+            throw new RuntimeException("Cannot put a pixkey with accountType: "+personType+" in a account type: "+accountPixKeys.getPersonType().name());
         }
     }
 
+    public void validateNonNull(PixKeyEntity pixKeyEntity){
+        if(Objects.isNull(pixKeyEntity)) {
+            throw new RuntimeException("pix key not found");
+        }
+    }
 
+    public void validateNonDeleted(PixKeyEntity pixKeyEntity){
+        if(Objects.nonNull(pixKeyEntity.getDateTimeDelete())) {
+            throw new RuntimeException("pix key already deleted");
+        }
+    }
 
-    public boolean hasDocumentRegistered(PixKey pixKeyDTO, AccountPixKeysModel accountPixKeysModel){
-        if(pixKeyDTO.getKeyType().name().equals("CPF") || pixKeyDTO.getKeyType().name().equals("CNPJ")) {
+    public boolean hasDocumentRegistered(String keyType, AccountPixKeysModel accountPixKeysModel){
+        if(keyType.equals("CPF") || keyType.equals("CNPJ")) {
             return accountPixKeysModel.getPixKeys().stream().anyMatch(pixKeyModel -> pixKeyModel.getKeyType().name().equals("CPF")||pixKeyModel.getKeyType().name().equals("CNPJ"));
         }
         return false;
@@ -49,4 +63,5 @@ public final class BusinessValidation {
         }
         return pixKeysModel.getPixKeys().size()>=20;
     }
+
 }

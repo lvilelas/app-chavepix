@@ -1,21 +1,17 @@
 package com.test.itau.chavepix.controller;
 
 import br.com.fluentvalidator.context.ValidationResult;
-import br.com.fluentvalidator.exception.ValidationException;
 import com.test.itau.chavepix.domain.PixKey;
 import com.test.itau.chavepix.dto.*;
-
-import com.test.itau.chavepix.exceptions.InvalidFieldException;
 import com.test.itau.chavepix.mapper.PixKeyMapper;
 import com.test.itau.chavepix.service.PixKeysService;
+import com.test.itau.chavepix.validation.PixKeyUpdateValidation;
 import com.test.itau.chavepix.validation.PixKeyValidation;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +19,7 @@ import java.util.UUID;
 public class PixKeyController {
 
     private final PixKeyValidation pixKeyValidation;
+    private final PixKeyUpdateValidation pixKeyUpdateValidation;
     private final PixKeysService pixKeysService;
 
     @PostMapping
@@ -36,20 +33,34 @@ public class PixKeyController {
         return PixKeyMapper.INSTANCE.toPixKeyOutDTO(pixKeysService.createPixKey(pixKey));
     }
 
-//    @PutMapping
-//    public PixKeyOutDTO searchPixKey(@RequestBody PixKeyDTO pixKeyDTO){
-//        return pixKeysService.updatePixKey(pixKeyDTO);
-//    }
+    @PutMapping
+    public PixKeyOutDTO updatePixKey(@RequestBody PixKeyUpdateDTO pixKeyUpdateDTO){
+        ValidationResult validationResult = pixKeyUpdateValidation.validate(pixKeyUpdateDTO);
+        if(!validationResult.isValid()){
+            throw new RuntimeException("teste");
+        }
+        PixKey pixKey = PixKeyMapper.INSTANCE.toPixKey(pixKeyUpdateDTO);
+        return PixKeyMapper.INSTANCE.toPixKeyOutDTO(pixKeysService.updatePixKey(pixKey));
+    }
+
+
+
 //
 //    @GetMapping
-//    public List<PixQueryOutDTO> searchPixKey(@RequestParam(value="id",required = false) UUID id,
-//                                             @RequestParam(value="tipo_chave",required = false) String keyTYpe,
-//                                             @RequestParam(value="numero_agencia",required = false) String agencyNumber,
-//                                             @RequestParam(value="numero_conta",required = false) String accountNumber,
-//                                             @RequestParam(value="nome_correntista",required = false)String accountHolderName, HttpServletResponse response){
-//
+//    public PixQueryOutDTO searchPixKeyById(@RequestParam(value="id",required = false) UUID id)String accountHolderName, HttpServletResponse response){
 //
 //        return pixKeysService.searchPixKey(new PixKeyQueryDTO(id,keyTYpe,agencyNumber,accountNumber,accountHolderName),response) ;
+//    }
+
+//    @GetMapping
+//    public List<PixQueryOutDTO> searchPixKey(@RequestParam(value="tipo_chave",required = false) String keyTYpe,
+//                                             @RequestParam(value="numero_agencia",required = false) BigDecimal agencyNumber,
+//                                             @RequestParam(value="numero_conta",required = false) BigDecimal accountNumber,
+//                                             @RequestParam(value="nome_correntista",required = false)String accountHolderName){
+//
+//        PixKeyQueryDTO pixKeyQueryDTO = new PixKeyQueryDTO(keyTYpe,agencyNumber,accountNumber,accountHolderName);
+//        PixKey pixKey = PixKeyMapper.INSTANCE.toPixKey(pixKeyQueryDTO);
+//        return pixKeysService.searchPixKey(pixKey) ;
 //    }
 //
 //    @DeleteMapping
