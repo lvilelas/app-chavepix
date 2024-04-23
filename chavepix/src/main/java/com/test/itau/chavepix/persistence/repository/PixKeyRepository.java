@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,7 +13,9 @@ import java.util.UUID;
 public interface PixKeyRepository extends JpaRepository<PixKeyEntity, UUID> {
     boolean existsByKeyValueAndDateTimeDeleteIsNull(String keyValue);
 
-    List<PixKeyEntity> findByAgencyNumberAndAccountNumber(String agencyNumber, String accountNumber);
+    boolean existsByKeyValue(String keyValue);
+
+    List<PixKeyEntity> findByAgencyNumberAndAccountNumber(BigInteger agencyNumber, BigInteger accountNumber);
 
 
     @Query(value = "SELECT p from PixKeyEntity as p WHERE (:id is NULL or p.id = :id) " +

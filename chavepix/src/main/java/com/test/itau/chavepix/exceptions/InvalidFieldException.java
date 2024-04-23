@@ -1,8 +1,13 @@
 package com.test.itau.chavepix.exceptions;
 
-public class InvalidFieldException extends RuntimeException{
 
-    public InvalidFieldException(String msg){
-        super("Field is not valid : "+msg);
+import br.com.fluentvalidator.context.ValidationResult;
+import br.com.fluentvalidator.exception.ValidationException;
+
+
+public class InvalidFieldException extends ValidationException {
+
+    protected InvalidFieldException(ValidationResult validationResult) {
+        super(validationResult);
     }
 }

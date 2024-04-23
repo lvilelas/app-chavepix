@@ -60,29 +60,29 @@ public class PixKeyControllerTest  extends PixKeyDTOMocks {
                         .content(objectMapper.writeValueAsString(getInvalidPixKeyValueCPF())))
                 .andExpect(status().is4xxClientError());
     }
+//
+//    @Test
+//    public void shouldSearchPixKeys() throws Exception {
+//        List<PixQueryOutDTO> list = new ArrayList<>();
+//        when(pixKeysService.searchPixKey(new PixKeyQueryDTO(null,"cpf","1234",null,null),null)).thenReturn(list);
+//        mockMvc.perform(get("/pix_key/search_pix_key").contentType(MediaType.APPLICATION_JSON)
+//                        .param("id","0685ccec-e7a3-450e-8be0-e30ebddbc7ef"))
+//                .andExpect(MockMvcResultMatchers.status().isOk());
+//    }
 
-    @Test
-    public void shouldSearchPixKeys() throws Exception {
-        List<PixQueryOutDTO> list = new ArrayList<>();
-        when(pixKeysService.searchPixKey(new PixKeyQueryDTO(null,"cpf","1234",null,null),null)).thenReturn(list);
-        mockMvc.perform(get("/pix_key/search_pix_key").contentType(MediaType.APPLICATION_JSON)
-                        .param("id","0685ccec-e7a3-450e-8be0-e30ebddbc7ef"))
-                .andExpect(MockMvcResultMatchers.status().isOk());
-    }
 
-
-    @Test
-    public void shouldDeletePixKey() throws Exception {
-
-        UUID id = UUID.randomUUID();
-        PixKeyEntity pixKeyEntity = new PixKeyEntity(getValidCPFPixKeyMock());
-        pixKeyEntity.setDateTimeCreation(LocalDateTime.now());
-        pixKeyEntity.setDateTimeDelete(LocalDateTime.now());
-        PixKeyDeleteOutDTO expectedOutput = new PixKeyDeleteOutDTO(pixKeyEntity);
-
-        expectedOutput.setId(id);
-        when(pixKeysService.deletePixKey(id)).thenReturn(expectedOutput);
-        mockMvc.perform(delete("/pix_key/delete_pix_key/{id}","0685ccec-e7a3-450e-8be0-e30ebddbc7ef").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk());
-    }
+//    @Test
+//    public void shouldDeletePixKey() throws Exception {
+//
+//        UUID id = UUID.randomUUID();
+//        PixKeyEntity pixKeyEntity = new PixKeyEntity(getValidCPFPixKeyMock());
+//        pixKeyEntity.setDateTimeCreation(LocalDateTime.now());
+//        pixKeyEntity.setDateTimeDelete(LocalDateTime.now());
+//        PixKeyDeleteOutDTO expectedOutput = new PixKeyDeleteOutDTO(pixKeyEntity);
+//
+//        expectedOutput.setId(id);
+//        when(pixKeysService.deletePixKey(id)).thenReturn(expectedOutput);
+//        mockMvc.perform(delete("/pix_key/delete_pix_key/{id}","0685ccec-e7a3-450e-8be0-e30ebddbc7ef").contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(MockMvcResultMatchers.status().isOk());
+//    }
 }

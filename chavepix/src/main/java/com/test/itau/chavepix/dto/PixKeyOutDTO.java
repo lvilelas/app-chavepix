@@ -6,6 +6,7 @@ import com.test.itau.chavepix.persistence.entity.PixKeyEntity;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigInteger;
 import java.util.UUID;
 
 @Getter
@@ -30,10 +31,10 @@ public class PixKeyOutDTO {
     private PersonTypeDTO personTypeDTO;
 
     @JsonProperty("numero_agencia")
-    private String agencyNumber;
+    private BigInteger agencyNumber;
 
     @JsonProperty("numero_conta")
-    private String accountNumber;
+    private BigInteger accountNumber;
 
     @JsonProperty("nome_correntista")
     private String accountHolderName;
@@ -44,17 +45,4 @@ public class PixKeyOutDTO {
     @JsonProperty("data_inclusao")
     private String dateTimeCreation;
 
-
-    public PixKeyOutDTO(PixKeyEntity pixKeyEntity) {
-        this.id = pixKeyEntity.getId();
-        this.keyTypeDTO = KeyTypeDTO.valueOf(pixKeyEntity.getKeyTypeEntity().name());
-        this.keyValue = pixKeyEntity.getKeyValue();
-        this.accountTypeDTO = AccountTypeDTO.valueOf(pixKeyEntity.getAccountTypeEntity().name());
-        this.personTypeDTO = PersonTypeDTO.valueOf(pixKeyEntity.getPersonTypeEntity().name());
-        this.agencyNumber = pixKeyEntity.getAgencyNumber();
-        this.accountNumber = pixKeyEntity.getAccountNumber();
-        this.accountHolderName = pixKeyEntity.getAccountHolderName();
-        this.accountHolderLastName = pixKeyEntity.getAccountHolderLastName();
-        this.dateTimeCreation = pixKeyEntity.getDateTimeCreation().toString();
-    }
 }

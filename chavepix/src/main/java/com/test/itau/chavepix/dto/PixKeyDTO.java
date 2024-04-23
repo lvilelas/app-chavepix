@@ -1,47 +1,39 @@
 package com.test.itau.chavepix.dto;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
+import java.math.BigInteger;
 import java.util.UUID;
 
 @Getter
 @Setter
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @AllArgsConstructor
-@ToString
 public class PixKeyDTO {
 
     @JsonProperty("id")
     private UUID id;
 
-    @JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
     @JsonProperty("tipo_chave")
-    private KeyTypeDTO keyTypeDTO;
+    private String keyType;
 
     @JsonProperty("valor_chave")
     private String keyValue;
 
-    @JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
     @JsonProperty("tipo_conta")
-    private AccountTypeDTO accountTypeDTO;
+    private String accountType;
 
     @JsonProperty("tipo_pessoa")
-    @JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
-    private PersonTypeDTO personTypeDTO;
+    private String personType;
 
     @JsonProperty("numero_agencia")
-    private String agencyNumber;
+    private BigInteger agencyNumber;
 
     @JsonProperty("numero_conta")
-    private String accountNumber;
+    private BigInteger accountNumber;
 
     @JsonProperty("nome_correntista")
     private String accountHolderName;

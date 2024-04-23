@@ -5,6 +5,7 @@ import com.test.itau.chavepix.dto.KeyTypeDTO;
 import com.test.itau.chavepix.dto.PersonTypeDTO;
 import com.test.itau.chavepix.dto.PixKeyDTO;
 
+import java.math.BigInteger;
 import java.util.UUID;
 
 public class PixKeyDTOMocks {
@@ -13,12 +14,12 @@ public class PixKeyDTOMocks {
 
         return new PixKeyDTO(
                 UUID.randomUUID(),
-                KeyTypeDTO.CPF,
+                KeyTypeDTO.CPF.name(),
                 "37819393831",
-                AccountTypeDTO.CORRENTE,
-                PersonTypeDTO.FISICA,
-                "1234",
-                "12345678",
+                AccountTypeDTO.CORRENTE.name(),
+                PersonTypeDTO.FISICA.name(),
+                BigInteger.valueOf(1234),
+                BigInteger.valueOf(12345678),
                 "Luiz",
                 "Silva"
         );
@@ -29,12 +30,12 @@ public class PixKeyDTOMocks {
 
         return new PixKeyDTO(
                 UUID.randomUUID(),
-                KeyTypeDTO.CNPJ,
+                KeyTypeDTO.CNPJ.name(),
                 "48135933000112",
-                AccountTypeDTO.CORRENTE,
-                PersonTypeDTO.JURIDICA,
-                "1234",
-                "12345678",
+                AccountTypeDTO.CORRENTE.name(),
+                PersonTypeDTO.JURIDICA.name(),
+                BigInteger.valueOf(1234),
+                BigInteger.valueOf(12345678),
                 "Luiz",
                 "Silva"
         );
@@ -45,12 +46,12 @@ public class PixKeyDTOMocks {
 
         return new PixKeyDTO(
                 UUID.randomUUID(),
-                KeyTypeDTO.CPF,
+                KeyTypeDTO.CPF.name(),
                 "378193938311",
-                AccountTypeDTO.CORRENTE,
-                PersonTypeDTO.FISICA,
-                "1234",
-                "12345678",
+                AccountTypeDTO.CORRENTE.name(),
+                PersonTypeDTO.FISICA.name(),
+                BigInteger.valueOf(1234),
+                BigInteger.valueOf(12345678),
                 "Luiz",
                 "Silva"
         );
@@ -60,12 +61,12 @@ public class PixKeyDTOMocks {
 
         return new PixKeyDTO(
                 UUID.randomUUID(),
-                KeyTypeDTO.CNPJ,
+                KeyTypeDTO.CNPJ.name(),
                 "378193938311",
-                AccountTypeDTO.CORRENTE,
-                PersonTypeDTO.JURIDICA,
-                "1234",
-                "12345678",
+                AccountTypeDTO.CORRENTE.name(),
+                PersonTypeDTO.JURIDICA.name(),
+                BigInteger.valueOf(1234),
+                BigInteger.valueOf(12345678),
                 "Luiz",
                 "Silva"
         );
@@ -75,12 +76,12 @@ public class PixKeyDTOMocks {
 
         return new PixKeyDTO(
                 UUID.randomUUID(),
-                KeyTypeDTO.CELULAR,
+                KeyTypeDTO.CELULAR.name(),
                 "+1119384",
-                AccountTypeDTO.CORRENTE,
-                PersonTypeDTO.JURIDICA,
-                "1234",
-                "12345678",
+                AccountTypeDTO.CORRENTE.name(),
+                PersonTypeDTO.JURIDICA.name(),
+                BigInteger.valueOf(1234),
+                BigInteger.valueOf(12345678),
                 "Luiz",
                 "Silva"
         );
@@ -90,12 +91,12 @@ public class PixKeyDTOMocks {
 
         return new PixKeyDTO(
                 UUID.randomUUID(),
-                KeyTypeDTO.EMAIL,
+                KeyTypeDTO.EMAIL.name(),
                 "+1119384",
-                AccountTypeDTO.CORRENTE,
-                PersonTypeDTO.JURIDICA,
-                "1234",
-                "12345678",
+                AccountTypeDTO.CORRENTE.name(),
+                PersonTypeDTO.JURIDICA.name(),
+                BigInteger.valueOf(1234),
+                BigInteger.valueOf(12345678),
                 "Luiz",
                 "Silva"
         );
@@ -105,12 +106,12 @@ public class PixKeyDTOMocks {
 
         return new PixKeyDTO(
                 UUID.randomUUID(),
-                KeyTypeDTO.ALEATORIO,
+                KeyTypeDTO.ALEATORIO.name(),
                 "123213214521515215214124215216216276347587659758758",
-                AccountTypeDTO.CORRENTE,
-                PersonTypeDTO.JURIDICA,
-                "1234",
-                "12345678",
+                AccountTypeDTO.CORRENTE.name(),
+                PersonTypeDTO.JURIDICA.name(),
+                BigInteger.valueOf(1234),
+                BigInteger.valueOf(12345678),
                 "Luiz",
                 "Silva"
         );
@@ -120,12 +121,12 @@ public class PixKeyDTOMocks {
 
         return new PixKeyDTO(
                 UUID.randomUUID(),
-                KeyTypeDTO.ALEATORIO,
+                KeyTypeDTO.ALEATORIO.name(),
                 "",
-                AccountTypeDTO.CORRENTE,
-                PersonTypeDTO.JURIDICA,
-                "1234",
-                "12345678",
+                AccountTypeDTO.CORRENTE.name(),
+                PersonTypeDTO.JURIDICA.name(),
+                BigInteger.valueOf(1234),
+                BigInteger.valueOf(12345678),
                 "Luiz",
                 "Silva"
         );
@@ -135,12 +136,12 @@ public class PixKeyDTOMocks {
 
         return new PixKeyDTO(
                 UUID.randomUUID(),
-                KeyTypeDTO.ALEATORIO,
+                KeyTypeDTO.ALEATORIO.name(),
                 "",
-                AccountTypeDTO.CORRENTE,
-                PersonTypeDTO.JURIDICA,
-                "1234",
-                "12345678",
+                AccountTypeDTO.CORRENTE.name(),
+                PersonTypeDTO.JURIDICA.name(),
+                BigInteger.valueOf(1234),
+                BigInteger.valueOf(12345678),
                 "Luiz",
                 "Silva"
         );
@@ -153,10 +154,10 @@ public class PixKeyDTOMocks {
                 UUID.randomUUID(),
                 null,
                 "378193938311",
-                AccountTypeDTO.CORRENTE,
-                PersonTypeDTO.FISICA,
-                "1234",
-                "12345678",
+                AccountTypeDTO.CORRENTE.name(),
+                PersonTypeDTO.FISICA.name(),
+                BigInteger.valueOf(1234),
+                BigInteger.valueOf(12345678),
                 "Luiz",
                 "Silva"
         );
@@ -166,12 +167,12 @@ public class PixKeyDTOMocks {
 
         return new PixKeyDTO(
                 UUID.randomUUID(),
-                KeyTypeDTO.CPF,
+                KeyTypeDTO.CPF.name(),
                 "37819393831",
                 null,
-                PersonTypeDTO.FISICA,
-                "1234",
-                "12345678",
+                PersonTypeDTO.FISICA.name(),
+                BigInteger.valueOf(1234),
+                BigInteger.valueOf(12345678),
                 "Luiz",
                 "Silva"
         );
@@ -181,12 +182,12 @@ public class PixKeyDTOMocks {
 
         return new PixKeyDTO(
                 UUID.randomUUID(),
-                KeyTypeDTO.CPF,
+                KeyTypeDTO.CPF.name(),
                 "37819393831",
-                AccountTypeDTO.CORRENTE,
+                AccountTypeDTO.CORRENTE.name(),
                 null,
-                "1234",
-                "12345678",
+                BigInteger.valueOf(1234),
+                BigInteger.valueOf(12345678),
                 "Luiz",
                 "Silva"
         );
@@ -196,12 +197,12 @@ public class PixKeyDTOMocks {
 
         return new PixKeyDTO(
                 UUID.randomUUID(),
-                KeyTypeDTO.CPF,
+                KeyTypeDTO.CPF.name(),
                 "37819393831",
-                AccountTypeDTO.CORRENTE,
-                PersonTypeDTO.FISICA,
-                "12345",
-                "12345678",
+                AccountTypeDTO.CORRENTE.name(),
+                PersonTypeDTO.FISICA.name(),
+                BigInteger.valueOf(12345),
+                BigInteger.valueOf(12345678),
                 "Luiz",
                 "Silva"
         );
@@ -211,12 +212,12 @@ public class PixKeyDTOMocks {
 
         return new PixKeyDTO(
                 UUID.randomUUID(),
-                KeyTypeDTO.CPF,
+                KeyTypeDTO.CPF.name(),
                 "37819393831",
-                AccountTypeDTO.CORRENTE,
-                PersonTypeDTO.FISICA,
-                "",
-                "12345678",
+                AccountTypeDTO.CORRENTE.name(),
+                PersonTypeDTO.FISICA.name(),
+                BigInteger.valueOf(0),
+                BigInteger.valueOf(12345678),
                 "Luiz",
                 "Silva"
         );
@@ -226,12 +227,12 @@ public class PixKeyDTOMocks {
 
         return new PixKeyDTO(
                 UUID.randomUUID(),
-                KeyTypeDTO.CPF,
+                KeyTypeDTO.CPF.name(),
                 "37819393831",
-                AccountTypeDTO.CORRENTE,
-                PersonTypeDTO.FISICA,
+                AccountTypeDTO.CORRENTE.name(),
+                PersonTypeDTO.FISICA.name(),
                 null,
-                "12345678",
+                BigInteger.valueOf(12345678),
                 "Luiz",
                 "Silva"
         );
@@ -241,12 +242,12 @@ public class PixKeyDTOMocks {
 
         return new PixKeyDTO(
                 UUID.randomUUID(),
-                KeyTypeDTO.CPF,
+                KeyTypeDTO.CPF.name(),
                 "37819393831",
-                AccountTypeDTO.CORRENTE,
-                PersonTypeDTO.FISICA,
-                "1234",
-                "123456789",
+                AccountTypeDTO.CORRENTE.name(),
+                PersonTypeDTO.FISICA.name(),
+                BigInteger.valueOf(1234),
+                BigInteger.valueOf(123456789),
                 "Luiz",
                 "Silva"
         );
@@ -257,11 +258,11 @@ public class PixKeyDTOMocks {
 
         return new PixKeyDTO(
                 UUID.randomUUID(),
-                KeyTypeDTO.CPF,
+                KeyTypeDTO.CPF.name(),
                 "37819393831",
-                AccountTypeDTO.CORRENTE,
-                PersonTypeDTO.FISICA,
-                "1234",
+                AccountTypeDTO.CORRENTE.name(),
+                PersonTypeDTO.FISICA.name(),
+                BigInteger.valueOf(1234),
                 null,
                 "Luiz",
                 "Silva"
@@ -272,12 +273,12 @@ public class PixKeyDTOMocks {
 
         return new PixKeyDTO(
                 UUID.randomUUID(),
-                KeyTypeDTO.CPF,
+                KeyTypeDTO.CPF.name(),
                 "37819393831",
-                AccountTypeDTO.CORRENTE,
-                PersonTypeDTO.FISICA,
-                "1234",
-                "",
+                AccountTypeDTO.CORRENTE.name(),
+                PersonTypeDTO.FISICA.name(),
+                BigInteger.valueOf(1234),
+                BigInteger.valueOf(0),
                 "Luiz",
                 "Silva"
         );
@@ -288,12 +289,12 @@ public class PixKeyDTOMocks {
 
         return new PixKeyDTO(
                 UUID.randomUUID(),
-                KeyTypeDTO.CPF,
+                KeyTypeDTO.CPF.name(),
                 "37819393831",
-                AccountTypeDTO.CORRENTE,
-                PersonTypeDTO.FISICA,
-                "1234",
-                "12345678",
+                AccountTypeDTO.CORRENTE.name(),
+                PersonTypeDTO.FISICA.name(),
+                BigInteger.valueOf(1234),
+                BigInteger.valueOf(12345678),
                 "",
                 "Silva"
         );
@@ -303,12 +304,12 @@ public class PixKeyDTOMocks {
 
         return new PixKeyDTO(
                 UUID.randomUUID(),
-                KeyTypeDTO.CPF,
+                KeyTypeDTO.CPF.name(),
                 "37819393831",
-                AccountTypeDTO.CORRENTE,
-                PersonTypeDTO.FISICA,
-                "1234",
-                "12345678",
+                AccountTypeDTO.CORRENTE.name(),
+                PersonTypeDTO.FISICA.name(),
+                BigInteger.valueOf(1234),
+                BigInteger.valueOf(12345678),
                 null,
                 "Silva"
         );
@@ -318,12 +319,12 @@ public class PixKeyDTOMocks {
 
         return new PixKeyDTO(
                 UUID.randomUUID(),
-                KeyTypeDTO.CPF,
+                KeyTypeDTO.CPF.name(),
                 "37819393831",
-                AccountTypeDTO.CORRENTE,
-                PersonTypeDTO.JURIDICA,
-                "1234",
-                "12345678",
+                AccountTypeDTO.CORRENTE.name(),
+                PersonTypeDTO.JURIDICA.name(),
+                BigInteger.valueOf(1234),
+                BigInteger.valueOf(12345678),
                 null,
                 "Silva"
         );
@@ -333,12 +334,12 @@ public class PixKeyDTOMocks {
 
         return new PixKeyDTO(
                 UUID.randomUUID(),
-                KeyTypeDTO.CNPJ,
+                KeyTypeDTO.CNPJ.name(),
                 "37819393831",
-                AccountTypeDTO.CORRENTE,
-                PersonTypeDTO.FISICA,
-                "1234",
-                "12345678",
+                AccountTypeDTO.CORRENTE.name(),
+                PersonTypeDTO.FISICA.name(),
+                BigInteger.valueOf(1234),
+                BigInteger.valueOf(12345678),
                 null,
                 "Silva"
         );

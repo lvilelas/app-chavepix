@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -35,9 +36,9 @@ public class PixKeyEntity {
     @Column(name="personType")
     private PersonTypeEntity personTypeEntity;
 
-    private String agencyNumber;
+    private BigInteger agencyNumber;
 
-    private String accountNumber;
+    private BigInteger accountNumber;
 
     private String accountHolderName;
 
@@ -50,24 +51,4 @@ public class PixKeyEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime dateTimeDelete;
 
-
-    public PixKeyEntity(PixKeyDTO pixKeyDTO) {
-        this.keyTypeEntity = KeyTypeEntity.valueOf(pixKeyDTO.getKeyTypeDTO().name());
-        this.keyValue = pixKeyDTO.getKeyValue();
-        this.accountTypeEntity = AccountTypeEntity.valueOf(pixKeyDTO.getAccountTypeDTO().name());
-        this.personTypeEntity = PersonTypeEntity.valueOf(pixKeyDTO.getPersonTypeDTO().name());
-        this.agencyNumber = pixKeyDTO.getAgencyNumber();
-        this.accountNumber = pixKeyDTO.getAccountNumber();
-        this.accountHolderName = pixKeyDTO.getAccountHolderName();
-        this.accountHolderLastName = pixKeyDTO.getAccountHolderLastName();
-    }
-
-    public void updatePixKey(PixKeyDTO pixKeyDTO) {
-        this.accountTypeEntity = AccountTypeEntity.valueOf(pixKeyDTO.getAccountTypeDTO().name());
-        this.agencyNumber = pixKeyDTO.getAgencyNumber();
-        this.accountNumber = pixKeyDTO.getAccountNumber();
-        this.accountHolderName = pixKeyDTO.getAccountHolderName();
-        this.accountHolderLastName = pixKeyDTO.getAccountHolderLastName();
-
-    }
 }

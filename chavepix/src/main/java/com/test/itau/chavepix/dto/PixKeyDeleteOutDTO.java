@@ -47,17 +47,4 @@ public class PixKeyDeleteOutDTO {
     @JsonProperty("data_exclusao")
     private String dateTimeDelete;
 
-    public PixKeyDeleteOutDTO(PixKeyEntity pixKeyEntity) {
-        this.id = pixKeyEntity.getId();
-        this.keyTypeDTO = KeyTypeDTO.valueOf(pixKeyEntity.getKeyTypeEntity().name());
-        this.keyValue = pixKeyEntity.getKeyValue();
-        this.accountTypeDTO = AccountTypeDTO.valueOf(pixKeyEntity.getAccountTypeEntity().name());
-        this.personTypeDTO = PersonTypeDTO.valueOf(pixKeyEntity.getPersonTypeEntity().name());
-        this.agencyNumber = pixKeyEntity.getAgencyNumber();
-        this.accountNumber = pixKeyEntity.getAccountNumber();
-        this.accountHolderName = pixKeyEntity.getAccountHolderName();
-        this.accountHolderLastName = pixKeyEntity.getAccountHolderLastName();
-        this.dateTimeCreation = pixKeyEntity.getDateTimeCreation().toString();
-        this.dateTimeDelete = pixKeyEntity.getDateTimeDelete().toString();
-    }
 }
