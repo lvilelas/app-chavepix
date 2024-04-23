@@ -16,7 +16,15 @@ import com.test.itau.chavepix.model.PersonTypeModel;
 import com.test.itau.chavepix.model.PixKeyModel;
 import com.test.itau.chavepix.persistence.entity.PixKeyEntity;
 import com.test.itau.chavepix.persistence.repository.PixKeyRepository;
+<<<<<<< HEAD
 import com.test.itau.chavepix.validation.BusinessValidation;
+=======
+import com.test.itau.chavepix.validation.handler.PixKeyQueryValidationHandler;
+import com.test.itau.chavepix.validation.handler.PixKeyRequestValidatorHandler;
+import com.test.itau.chavepix.validation.handler.PixKeyValidationHandler;
+import com.test.itau.chavepix.validation.pixkey.ValidatePixKeyCountLimit;
+import jakarta.servlet.http.HttpServletResponse;
+>>>>>>> a144ae7747b9a2b629bf1f4cfea7b9b09254d49c
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

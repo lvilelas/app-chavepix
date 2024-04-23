@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.NotReadablePropertyException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -43,5 +44,13 @@ public class PixKeyExceptionHandler {
     public ErrorDTO handler(PixKeyNotFoundException ex){
         log.error("Error while searching for pix key : {}", ex.getMessage());
         return new ErrorDTO("chave pix não encontrada",ex.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ResponseBody
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ErrorDTO handler(HttpMessageNotReadableException ex){
+        log.error("Error while validating fields : {}", ex.getMessage());
+        return new ErrorDTO("erro na validação dos campos",ex.getMessage());
     }
 }

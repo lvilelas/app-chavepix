@@ -7,11 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigInteger;
-import java.util.UUID;
-
-@Getter
-@Setter
-@AllArgsConstructor
 public class PixKeyDTO {
 
     @JsonProperty("id")
@@ -40,5 +35,14 @@ public class PixKeyDTO {
 
     @JsonProperty("sobrenome_correntista")
     private String accountHolderLastName;
+
+
+    public String getAgencyNumber() {
+        return new BigDecimal(agencyNumber).toString();
+    }
+
+    public String getAccountNumber() {
+        return new BigDecimal(accountNumber).toString();
+    }
 
 }
