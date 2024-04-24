@@ -128,7 +128,6 @@ public class PixKeysService {
         if(Objects.isNull(date)){
             return null;
         }
-
         return LocalDateTime.parse(date,formatter);
     }
 
