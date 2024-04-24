@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
+import java.util.Map;
 import java.util.UUID;
 
 @Getter
@@ -13,10 +14,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @ToString
 public class PixKeyQueryDTO {
-    private String keyType;
-    private BigDecimal agencyNumber;
-    private BigDecimal accountNumber;
-    private String accountHolderName;
+
+    private UUID id;
+    private Map<String,String> parameters;
 
 }
 

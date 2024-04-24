@@ -5,6 +5,7 @@ import com.test.itau.chavepix.domain.PixKey;
 import com.test.itau.chavepix.dto.*;
 import com.test.itau.chavepix.mapper.PixKeyMapper;
 import com.test.itau.chavepix.service.PixKeysService;
+import com.test.itau.chavepix.validation.PixKeySearchValidation;
 import com.test.itau.chavepix.validation.PixKeyUpdateValidation;
 import com.test.itau.chavepix.validation.PixKeyValidation;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,6 +23,7 @@ public class PixKeyController {
 
     private final PixKeyValidation pixKeyValidation;
     private final PixKeyUpdateValidation pixKeyUpdateValidation;
+    private final PixKeySearchValidation pixKeySearchValidation;
     private final PixKeysService pixKeysService;
 
     @PostMapping
@@ -45,29 +49,23 @@ public class PixKeyController {
 
 
 
-//
-//    @GetMapping
-//    public PixQueryOutDTO searchPixKeyById(@RequestParam(value="id",required = false) UUID id)String accountHolderName, HttpServletResponse response){
-//
-//        return pixKeysService.searchPixKey(new PixKeyQueryDTO(id,keyTYpe,agencyNumber,accountNumber,accountHolderName),response) ;
-//    }
+    @GetMapping(value = {"/","/{id}"})
+    public List<PixQueryOutDTO> searchPixKey(@PathVariable(required = false) UUID id, @RequestParam Map<String, String> parameters){
+        PixKeyQueryDTO pixKeyQueryDTO = new PixKeyQueryDTO(id,parameters);
 
-//    @GetMapping
-//    public List<PixQueryOutDTO> searchPixKey(@RequestParam(value="tipo_chave",required = false) String keyTYpe,
-//                                             @RequestParam(value="numero_agencia",required = false) BigDecimal agencyNumber,
-//                                             @RequestParam(value="numero_conta",required = false) BigDecimal accountNumber,
-//                                             @RequestParam(value="nome_correntista",required = false)String accountHolderName){
-//
-//        PixKeyQueryDTO pixKeyQueryDTO = new PixKeyQueryDTO(keyTYpe,agencyNumber,accountNumber,accountHolderName);
-//        PixKey pixKey = PixKeyMapper.INSTANCE.toPixKey(pixKeyQueryDTO);
-//        return pixKeysService.searchPixKey(pixKey) ;
-//    }
-//
-//    @DeleteMapping
-//    public PixKeyDeleteOutDTO deletePixKey(@PathVariable UUID id){
-//
-//        return pixKeysService.deletePixKey(id);
-//    }
+        ValidationResult validationResult = pixKeySearchValidation.validate(pixKeyQueryDTO);
+        if(!validationResult.isValid()){
+            throw new RuntimeException("teste");
+        }
+
+        return pixKeysService.searchPixKey(pixKeyQueryDTO) ;
+    }
+
+    @DeleteMapping("/{id}")
+    public PixKeyDeleteOutDTO deletePixKey(@PathVariable UUID id){
+
+        return pixKeysService.deletePixKey(id);
+    }
 
 
 }

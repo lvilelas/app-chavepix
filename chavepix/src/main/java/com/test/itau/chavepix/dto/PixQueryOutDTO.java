@@ -45,7 +45,7 @@ public class PixQueryOutDTO {
     private String accountHolderLastName;
 
     @JsonProperty("data_inclusao")
-    private LocalDateTime dateTimeCreation;
+    private String dateTimeCreation;
 
     @JsonProperty("data_exclusao")
     private String dateTimeDelete;
