@@ -111,7 +111,7 @@ public class PixKeyValidation extends AbstractValidator<PixKeyDTO> {
                         .map(Enum::name)
                         .anyMatch(personType::equalsIgnoreCase))
                 .when(Objects::nonNull)
-                .withMessage("Person type must not be null")
+                .withMessage("Invalid persontype")
                 .withFieldName("personType")
                 .critical();
     }
