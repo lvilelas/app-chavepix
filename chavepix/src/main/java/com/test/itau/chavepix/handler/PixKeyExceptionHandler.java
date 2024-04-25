@@ -1,20 +1,19 @@
 package com.test.itau.chavepix.handler;
 
 
-import com.test.itau.chavepix.controller.PixKeyController;
-import com.test.itau.chavepix.dto.ErrorDTO;
-import com.test.itau.chavepix.exceptions.InvalidBusinessRule;
-import com.test.itau.chavepix.exceptions.InvalidFieldException;
+import com.test.itau.chavepix.dto.ErrorResponseDTO;
+import com.test.itau.chavepix.exceptions.BusinessRulesException;
+import com.test.itau.chavepix.exceptions.PixKeyException;
 import com.test.itau.chavepix.exceptions.PixKeyNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.NotReadablePropertyException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import java.util.Collections;
 
 @ControllerAdvice
 public class PixKeyExceptionHandler {
@@ -23,34 +22,25 @@ public class PixKeyExceptionHandler {
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ResponseBody
-    @ExceptionHandler(InvalidFieldException.class)
-    public ErrorDTO handler(InvalidFieldException ex){
-        log.error("Error while validating fields : {}", ex.getMessage());
-        return new ErrorDTO("erro na validação dos campos",ex.getMessage());
+    @ExceptionHandler(PixKeyException.class)
+    public ErrorResponseDTO handler(PixKeyException ex){
+        log.error("Validation error : {}", ex.getErrors());
+        return new ErrorResponseDTO("Error while validating fields", ex.getErrors());
     }
-
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ResponseBody
-    @ExceptionHandler(InvalidBusinessRule.class)
-    public ErrorDTO handler(InvalidBusinessRule ex){
-        log.error("Error while validating business rules : {}", ex.getMessage());
-        return new ErrorDTO("regra de negocio não atendida",ex.getMessage());
+    @ExceptionHandler(BusinessRulesException.class)
+    public ErrorResponseDTO handler(BusinessRulesException ex){
+        log.error("Business rule error : {}", ex.getErrorDTO().getError());
+        return new ErrorResponseDTO("Error while validating fields", Collections.singletonList(ex.getErrorDTO()));
     }
 
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
     @ExceptionHandler(PixKeyNotFoundException.class)
-    public ErrorDTO handler(PixKeyNotFoundException ex){
+    public void handler(PixKeyNotFoundException ex){
         log.error("Error while searching for pix key : {}", ex.getMessage());
-        return new ErrorDTO("chave pix não encontrada",ex.getMessage());
     }
 
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    @ResponseBody
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ErrorDTO handler(HttpMessageNotReadableException ex){
-        log.error("Error while validating fields : {}", ex.getMessage());
-        return new ErrorDTO("erro na validação dos campos",ex.getMessage());
-    }
 }

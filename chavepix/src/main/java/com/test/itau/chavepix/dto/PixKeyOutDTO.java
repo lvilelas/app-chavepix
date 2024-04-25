@@ -2,17 +2,15 @@ package com.test.itau.chavepix.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.test.itau.chavepix.persistence.entity.PixKeyEntity;
-import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigInteger;
 import java.util.UUID;
 
-@Getter
 @Setter
 public class PixKeyOutDTO {
 
+    @JsonProperty("id")
     private UUID id;
 
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)

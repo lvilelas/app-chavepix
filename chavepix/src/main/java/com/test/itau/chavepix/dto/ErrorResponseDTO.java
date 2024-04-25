@@ -4,13 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Map;
+import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
-public class ErrorDTO {
+public class ErrorResponseDTO {
 
-    String fieldName;
-    String error;
+    private String message;
+
+    private List<ErrorDTO> errors;
+
 }

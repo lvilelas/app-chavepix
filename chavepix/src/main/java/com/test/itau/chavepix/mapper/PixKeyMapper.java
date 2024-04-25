@@ -1,19 +1,18 @@
 package com.test.itau.chavepix.mapper;
 
-import com.test.itau.chavepix.domain.AccountType;
-import com.test.itau.chavepix.domain.KeyType;
-import com.test.itau.chavepix.domain.PersonType;
-import com.test.itau.chavepix.domain.PixKey;
+import com.test.itau.chavepix.domain.*;
 import com.test.itau.chavepix.dto.*;
+import com.test.itau.chavepix.helper.DateTimeFormatterHelper;
 import com.test.itau.chavepix.persistence.entity.AccountTypeEntity;
 import com.test.itau.chavepix.persistence.entity.KeyTypeEntity;
 import com.test.itau.chavepix.persistence.entity.PersonTypeEntity;
 import com.test.itau.chavepix.persistence.entity.PixKeyEntity;
+import io.micrometer.common.util.StringUtils;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 import java.time.format.DateTimeFormatter;
-import java.util.UUID;
+import java.util.Objects;
 
 @Mapper
 public interface PixKeyMapper {
@@ -40,7 +39,7 @@ public interface PixKeyMapper {
         pixKey.setPersonType(PersonType.getPersonType(pixKeyDTO.getPersonType()));
     }
 
-    @Mapping(target = "dateTimeCreation", source="dateTimeCreation")
+    @Mapping(target = "dateTimeCreation", ignore = true)
     @Mapping(target = "id", source="id")
     @Mapping(target = "keyValue", source = "keyValue")
     @Mapping(target = "keyTypeDTO", ignore = true)
@@ -49,7 +48,7 @@ public interface PixKeyMapper {
     @Mapping(target = "agencyNumber", source = "agencyNumber")
     @Mapping(target = "accountNumber", source = "accountNumber")
     @Mapping(target = "accountHolderName", source = "accountHolderName")
-    @Mapping(target = "accountHolderLastName", source = "accountHolderLastName")
+    @Mapping(target = "accountHolderLastName", ignore = true)
     PixKeyOutDTO toPixKeyOutDTO(PixKey pixKey);
 
     @AfterMapping
@@ -57,6 +56,8 @@ public interface PixKeyMapper {
         pixKeyOutDTO.setAccountTypeDTO(AccountTypeDTO.valueOf(pixKey.getAccountType().name()));
         pixKeyOutDTO.setKeyTypeDTO(KeyTypeDTO.valueOf(pixKey.getKeyType().name()));
         pixKeyOutDTO.setPersonTypeDTO(PersonTypeDTO.valueOf(pixKey.getPersonType().name()));
+        pixKeyOutDTO.setDateTimeCreation(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(pixKey.getDateTimeCreation()));
+        pixKeyOutDTO.setAccountHolderLastName(Objects.isNull(pixKey.getAccountHolderLastName()) ? "" : pixKey.getAccountHolderLastName());
     }
 
 
@@ -113,11 +114,12 @@ public interface PixKeyMapper {
     @Mapping(target = "keyTypeDTO", ignore = true)
     @Mapping(target = "keyValue", source = "keyValue")
     @Mapping(target = "id", source = "id")
-    @Mapping(target = "dateTimeCreation", source = "dateTimeCreation")
+    @Mapping(target = "dateTimeCreation", ignore= true)
+    @Mapping(target = "dateTimeDelete", ignore= true)
     @Mapping(target = "agencyNumber", source = "agencyNumber")
     @Mapping(target = "accountNumber", source = "accountNumber")
     @Mapping(target = "accountHolderName", source = "accountHolderName")
-    @Mapping(target = "accountHolderLastName", source = "accountHolderLastName")
+    @Mapping(target = "accountHolderLastName", ignore = true)
     PixKeyDeleteOutDTO toPixKeyDeleteOutDTO(PixKeyEntity pixKeyEntity);
 
     @AfterMapping
@@ -125,6 +127,9 @@ public interface PixKeyMapper {
         pixKeyDeleteOutDTO.setAccountTypeDTO(AccountTypeDTO.valueOf(pixKeyEntity.getAccountTypeEntity().name()));
         pixKeyDeleteOutDTO.setKeyTypeDTO(KeyTypeDTO.valueOf(pixKeyEntity.getKeyTypeEntity().name()));
         pixKeyDeleteOutDTO.setPersonTypeDTO(PersonTypeDTO.valueOf(pixKeyEntity.getPersonTypeEntity().name()));
+        pixKeyDeleteOutDTO.setDateTimeDelete(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(pixKeyEntity.getDateTimeDelete()));
+        pixKeyDeleteOutDTO.setDateTimeCreation(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(pixKeyEntity.getDateTimeCreation()));
+        pixKeyDeleteOutDTO.setAccountHolderLastName(Objects.isNull(pixKeyEntity.getAccountHolderLastName()) ? "" : pixKeyEntity.getAccountHolderLastName());
     }
 
     @Mapping(target = "accountTypeDTO", ignore = true)
@@ -136,8 +141,8 @@ public interface PixKeyMapper {
     @Mapping(target = "id", source = "id")
     @Mapping(target = "agencyNumber", source = "agencyNumber")
     @Mapping(target = "accountNumber", source = "accountNumber")
-    @Mapping(target = "accountHolderName", source = "accountHolderName")
-    @Mapping(target = "accountHolderLastName", source = "accountHolderLastName")
+    @Mapping(target = "accountHolderName", source="accountHolderName")
+    @Mapping(target = "accountHolderLastName", ignore = true)
     PixQueryOutDTO toPixQueryOutDTO(PixKeyEntity pixKeyEntity);
 
     @AfterMapping
@@ -145,8 +150,41 @@ public interface PixKeyMapper {
         pixQueryOutDTO.setAccountTypeDTO(AccountTypeDTO.valueOf(pixKeyEntity.getAccountTypeEntity().name()));
         pixQueryOutDTO.setKeyTypeDTO(KeyTypeDTO.valueOf(pixKeyEntity.getKeyTypeEntity().name()));
         pixQueryOutDTO.setPersonTypeDTO(PersonTypeDTO.valueOf(pixKeyEntity.getPersonTypeEntity().name()));
-        pixQueryOutDTO.setDateTimeCreation(DateTimeFormatter.ofPattern("dd/MM/yyyy").format(pixKeyEntity.getDateTimeCreation()));
-        pixQueryOutDTO.setDateTimeDelete(DateTimeFormatter.ofPattern("dd/MM/yyyy").format(pixKeyEntity.getDateTimeCreation()));
+        pixQueryOutDTO.setDateTimeCreation(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(pixKeyEntity.getDateTimeCreation()));
+        pixQueryOutDTO.setDateTimeDelete(Objects.nonNull(pixKeyEntity.getDateTimeDelete()) ?
+                DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(pixKeyEntity.getDateTimeDelete()) :
+                "");
+        pixQueryOutDTO.setAccountHolderLastName(Objects.isNull(pixKeyEntity.getAccountHolderLastName()) ? "" : pixKeyEntity.getAccountHolderLastName());
     }
 
+    @Mapping(target = "keyType", source = "parameters.tipo_chave")
+    @Mapping(target = "dateDeleteStart", ignore = true)
+    @Mapping(target = "dateDeleteEnd", ignore = true)
+    @Mapping(target = "dateCreateStart", ignore = true)
+    @Mapping(target = "dateCreateEnd", ignore = true)
+    @Mapping(source = "parameters.nome_correntista", target = "accountHolderName")
+    @Mapping(source = "parameters.numero_conta", target = "accountNumber")
+    @Mapping(source = "parameters.numero_agencia", target = "agencyNumber")
+    @Mapping(source = "id", target = "id")
+    PixKeyQuery toPixKeyQuery(PixKeyQueryDTO pixKeyQueryDTO);
+
+    @AfterMapping
+    default void toPixKeyQuery(@MappingTarget PixKeyQuery pixKey, PixKeyQueryDTO pixKeyQueryDTO){
+        String dateCreate = pixKeyQueryDTO.getParameters().get("data_criacao");
+        if(StringUtils.isNotBlank(dateCreate)){
+            pixKey.setDateCreateStart(DateTimeFormatterHelper
+                    .toLocalDateTime(dateCreate,DateTimeFormatterHelper
+                            .formatterWithDateOnly()));
+            pixKey.setDateCreateEnd(pixKey.getDateCreateStart().plusMinutes(1439));
+        }
+
+        String dateDelete = pixKeyQueryDTO.getParameters().get("data_exclusao");
+        if(StringUtils.isNotBlank((dateDelete))){
+            pixKey.setDateCreateStart(DateTimeFormatterHelper
+                    .toLocalDateTime(dateDelete,DateTimeFormatterHelper
+                            .formatterWithDateOnly()));
+            pixKey.setDateDeleteEnd(pixKey.getDateDeleteStart().plusMinutes(1439));
+        }
+
+    }
 }

@@ -1,6 +1,7 @@
 package com.test.itau.chavepix.validation;
 
 import br.com.fluentvalidator.AbstractValidator;
+import com.test.itau.chavepix.domain.KeyType;
 import com.test.itau.chavepix.dto.PixKeyQueryDTO;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ public class PixKeySearchValidation extends AbstractValidator<PixKeyQueryDTO> {
     @Override
     public void rules() {
         validateID();
+        validateKeyType();
         validateDateTime();
         validateDateCreate();
         validateDateDelete();
@@ -24,7 +26,19 @@ public class PixKeySearchValidation extends AbstractValidator<PixKeyQueryDTO> {
                 .must(pixKeyQueryDTO -> pixKeyQueryDTO.getParameters().isEmpty() && Objects.nonNull(pixKeyQueryDTO.getId()))
                 .when(pixKeyQueryDTO -> Objects.nonNull(pixKeyQueryDTO.getId()))
                 .withMessage("Search by id dosent work with parameters")
-                .withFieldName("id");
+                .withFieldName("id")
+                .critical();
+    }
+
+    void validateKeyType(){
+        ruleFor(pixKeyQueryDTO -> {
+            return pixKeyQueryDTO.getParameters().get("tipo_chave");
+        })
+                .must(s -> s.equals(KeyType.getByDescription(s).name()))
+                .when(Objects::nonNull)
+                .withMessage("Field tipo_chave need to be CPF or CNPJ")
+                .withFieldName("tipo_chave")
+                .critical();
     }
 
     void validateDateCreate() {

@@ -1,88 +1,149 @@
 package com.test.itau.chavepix.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.test.itau.chavepix.dto.PixKeyDeleteOutDTO;
-import com.test.itau.chavepix.dto.PixKeyQueryDTO;
-import com.test.itau.chavepix.dto.PixQueryOutDTO;
+import br.com.fluentvalidator.context.Error;
+import br.com.fluentvalidator.context.ValidationResult;
+import com.test.itau.chavepix.domain.PixKey;
+import com.test.itau.chavepix.domain.PixKeyQuery;
+import com.test.itau.chavepix.dto.*;
+import com.test.itau.chavepix.exceptions.PixKeyException;
+import com.test.itau.chavepix.mapper.PixKeyMapper;
+import com.test.itau.chavepix.mapper.PixKeyMapperImpl;
+import com.test.itau.chavepix.mapper.PixKeyUpdateMapper;
+import com.test.itau.chavepix.mapper.PixKeyUpdateMapperImpl;
 import com.test.itau.chavepix.mocks.PixKeyDTOMocks;
-import com.test.itau.chavepix.persistence.entity.PixKeyEntity;
 import com.test.itau.chavepix.service.PixKeysService;
+import com.test.itau.chavepix.validation.PixKeySearchValidation;
+import com.test.itau.chavepix.validation.PixKeyUpdateValidation;
+import com.test.itau.chavepix.validation.PixKeyValidation;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-@WebMvcTest(controllers = PixKeyController.class)
-public class PixKeyControllerTest  extends PixKeyDTOMocks {
-
-//    @Autowired
-//    private MockMvc mockMvc;
-//
-//    @Autowired
-//    private ObjectMapper objectMapper;
-//
-//    @MockBean
-//    PixKeysService pixKeysService;
-//
-//    @InjectMocks
-//    private PixKeyController pixKeyController;
-//
-//    @Test
-//    public void shouldCreatePixKey() throws Exception {
-//        mockMvc.perform(post("/pix_key/create_pix_key").contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(getValidCPFPixKeyMock())))
-//                .andExpect(status().isOk());
-//    }
-//
-//    @Test
-//    public void shouldUpdatePixKey() throws Exception {
-//        mockMvc.perform(put("/pix_key/update_pix_key").contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(getValidCPFPixKeyMock())))
-//                .andExpect(status().isOk());
-//    }
-//
-//    @Test
-//    public void shouldGetErrorInvalidField() throws Exception {
-//               mockMvc.perform(post("/pix_key/create_pixKey").contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(getInvalidPixKeyValueCPF())))
-//                .andExpect(status().is4xxClientError());
-//    }
-//
-//    @Test
-//    public void shouldSearchPixKeys() throws Exception {
-//        List<PixQueryOutDTO> list = new ArrayList<>();
-//        when(pixKeysService.searchPixKey(new PixKeyQueryDTO(null,"cpf","1234",null,null),null)).thenReturn(list);
-//        mockMvc.perform(get("/pix_key/search_pix_key").contentType(MediaType.APPLICATION_JSON)
-//                        .param("id","0685ccec-e7a3-450e-8be0-e30ebddbc7ef"))
-//                .andExpect(MockMvcResultMatchers.status().isOk());
-//    }
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 
-//    @Test
-//    public void shouldDeletePixKey() throws Exception {
-//
-//        UUID id = UUID.randomUUID();
-//        PixKeyEntity pixKeyEntity = new PixKeyEntity(getValidCPFPixKeyMock());
-//        pixKeyEntity.setDateTimeCreation(LocalDateTime.now());
-//        pixKeyEntity.setDateTimeDelete(LocalDateTime.now());
-//        PixKeyDeleteOutDTO expectedOutput = new PixKeyDeleteOutDTO(pixKeyEntity);
-//
-//        expectedOutput.setId(id);
-//        when(pixKeysService.deletePixKey(id)).thenReturn(expectedOutput);
-//        mockMvc.perform(delete("/pix_key/delete_pix_key/{id}","0685ccec-e7a3-450e-8be0-e30ebddbc7ef").contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(MockMvcResultMatchers.status().isOk());
-//    }
+
+public class PixKeyControllerTest extends PixKeyDTOMocks {
+
+    @Mock
+    private PixKeyValidation pixKeyValidation;
+
+    @Mock
+    private PixKeyUpdateValidation pixKeyUpdateValidation;
+
+    @Mock
+    private PixKeySearchValidation pixKeySearchValidation;
+
+    @Mock
+    private PixKeysService pixKeysService;
+
+    @Spy
+    private PixKeyMapper pixKeyMapperImpl =  new PixKeyMapperImpl();
+
+    @Spy
+    private PixKeyUpdateMapper pixKeyUpdateMapperImpl =  new PixKeyUpdateMapperImpl();
+
+    @InjectMocks
+    private PixKeyController pixKeyController;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
+
+    @Test
+    public void testCreatePixKey() {
+
+
+        // Mocking the request body
+        PixKeyDTO pixKeyDTO = getValidCPFPixKeyMock();
+
+        // Mocking validation result
+        ValidationResult validationResult = ValidationResult.ok();
+        when(pixKeyValidation.validate(any(PixKeyDTO.class))).thenReturn(validationResult);
+        // Mocking service behavior
+        when(pixKeysService.createPixKey(any(PixKey.class))).thenReturn(getValidPixKey());
+
+        // Calling the method under test
+        PixKeyOutDTO result = pixKeyController.createPixKey(pixKeyDTO);
+
+        // Verifying if the service method was called
+        verify(pixKeysService, times(1)).createPixKey(any(PixKey.class));
+    }
+
+    @Test
+    public void testCreatePixKeyError() {
+
+        // Mocking the request body
+        PixKeyDTO pixKeyDTO = getValidCPFPixKeyMock();
+
+        Collection<Error> collections = new ArrayList<Error>();
+
+        Error error =  Error.create("teste","teste","teste",getInvalidAccountNumberMock());
+
+        collections.add(error);
+
+        ValidationResult validationResult = ValidationResult.fail(collections);
+        when(pixKeyValidation.validate(any(PixKeyDTO.class))).thenReturn(validationResult);
+
+        assertThrows(PixKeyException.class,() -> pixKeyController.createPixKey(pixKeyDTO));
+    }
+
+    @Test
+    public void testUpdatePixKey() {
+        // Mocking the request body
+        PixKeyUpdateDTO pixKeyUpdateDTO = getPixUpdated();
+
+        // Mocking validation result
+        when(pixKeyUpdateValidation.validate(pixKeyUpdateDTO)).thenReturn(ValidationResult.ok());
+
+        // Mocking service behavior
+        when(pixKeysService.updatePixKey(any(PixKey.class))).thenReturn(getValidPixKey());
+
+        // Calling the method under test
+        PixKeyOutDTO result = pixKeyController.updatePixKey(pixKeyUpdateDTO);
+
+        // Verifying if the service method was called
+        verify(pixKeysService, times(1)).updatePixKey(any(PixKey.class));
+    }
+
+    @Test
+    public void testSearchPixKey() {
+        // Mocking path variable and request parameter
+        UUID id = UUID.randomUUID();
+        Map<String, String> parameters = new HashMap<>();
+
+        // Mocking validation result
+        when(pixKeySearchValidation.validate(any(PixKeyQueryDTO.class))).thenReturn(ValidationResult.ok());
+
+        // Mocking service behavior
+        when(pixKeysService.searchPixKey(any(PixKeyQuery.class))).thenReturn(Collections.singletonList(null));
+
+        // Calling the method under test
+        List<PixQueryOutDTO> result = pixKeyController.searchPixKey(id, parameters);
+
+        // Verifying if the service method was called
+        verify(pixKeysService, times(1)).searchPixKey(any(PixKeyQuery.class));
+    }
+
+    @Test
+    public void testDeletePixKey() {
+        // Mocking path variable
+        UUID id = UUID.randomUUID();
+
+        // Mocking service behavior
+        when(pixKeysService.deletePixKey(id)).thenReturn(getPixKeyDeleteOutDTO());
+
+        // Calling the method under test
+        PixKeyDeleteOutDTO result = pixKeyController.deletePixKey(id);
+
+        // Verifying if the service method was called
+        verify(pixKeysService, times(1)).deletePixKey(id);
+    }
 }

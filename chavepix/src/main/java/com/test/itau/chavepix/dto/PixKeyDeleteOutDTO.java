@@ -8,10 +8,10 @@ import lombok.Setter;
 
 import java.util.UUID;
 
-@Getter
 @Setter
 public class PixKeyDeleteOutDTO {
 
+    @JsonProperty("id")
     private UUID id;
 
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)

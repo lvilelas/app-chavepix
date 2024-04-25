@@ -5,7 +5,9 @@ import com.test.itau.chavepix.domain.AccountType;
 import com.test.itau.chavepix.domain.KeyType;
 import com.test.itau.chavepix.domain.PersonType;
 import com.test.itau.chavepix.domain.PixKey;
+import com.test.itau.chavepix.dto.KeyTypeDTO;
 import com.test.itau.chavepix.dto.PixKeyDTO;
+import com.test.itau.chavepix.exceptions.PixKeyException;
 import com.test.itau.chavepix.helper.CPFCNPJHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -19,14 +21,15 @@ import java.util.function.Function;
 public class PixKeyValidation extends AbstractValidator<PixKeyDTO> {
     @Override
     public void rules() {
-        validateKeyType();
+
         validateAccountType();
         validatePersonType();
         validateAgencyNumber();
         validateAccountNumber();
-        validatePixKey();
         validateAccountHolderName();
         validateAccountHolderLastName();
+        validateKeyType();
+        validatePixKey();
     }
 
     private void validateAccountHolderLastName() {
@@ -87,16 +90,14 @@ public class PixKeyValidation extends AbstractValidator<PixKeyDTO> {
                 .must(Objects::nonNull)
                 .withMessage("Key type must not be null")
                 .withFieldName("keyType")
-                .critical();
+                .critical(PixKeyException.class);
 
         ruleFor(PixKeyDTO::getKeyType)
-                .must(keyType -> Arrays.stream(KeyType.values())
-                        .map(Enum::name)
-                        .anyMatch(keyType::equalsIgnoreCase))
+                .must(keyType -> Objects.nonNull(KeyTypeDTO.getByDescription(keyType)))
                 .when(Objects::nonNull)
-                .withMessage("Key type must not be null")
+                .withMessage("Invalid Key Type")
                 .withFieldName("keyType")
-                .critical();
+                .critical(PixKeyException.class);
     }
 
     private void validatePersonType(){
@@ -128,7 +129,7 @@ public class PixKeyValidation extends AbstractValidator<PixKeyDTO> {
                     .map(Enum::name)
                         .anyMatch(accountTypeDTO::equalsIgnoreCase))
                 .when(Objects::nonNull)
-                .withMessage("Account type must not be null")
+                .withMessage("Invalid account type")
                 .withFieldName("accountType")
                 .critical();
 
@@ -140,7 +141,7 @@ public class PixKeyValidation extends AbstractValidator<PixKeyDTO> {
                 .must(Objects::nonNull)
                 .withMessage("Agency number must not be null")
                 .withFieldName("agencyNumber")
-                .critical();
+                .critical(PixKeyException.class);
 
         ruleFor(PixKeyDTO::getAgencyNumber)
                 .must(agencyNumber -> agencyNumber.compareTo(BigInteger.valueOf(9999)) <= 0 && agencyNumber.compareTo(BigInteger.valueOf(1)) >= 0)
@@ -154,7 +155,7 @@ public class PixKeyValidation extends AbstractValidator<PixKeyDTO> {
                 .must(Objects::nonNull)
                 .withMessage("Account Number must not be null")
                 .withFieldName("accountNumber")
-                .critical();
+                .critical(PixKeyException.class);
 
         ruleFor(PixKeyDTO::getAccountNumber)
                 .must(accountNumber -> accountNumber.compareTo(BigInteger.valueOf(99999999)) <= 0 && accountNumber.compareTo(BigInteger.valueOf(1)) >= 0)

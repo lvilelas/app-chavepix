@@ -1,5 +1,7 @@
 package com.test.itau.chavepix.persistence.repository;
 
+import com.test.itau.chavepix.domain.KeyType;
+import com.test.itau.chavepix.persistence.entity.KeyTypeEntity;
 import com.test.itau.chavepix.persistence.entity.PixKeyEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,8 +14,6 @@ import java.util.UUID;
 
 @Repository
 public interface PixKeyRepository extends JpaRepository<PixKeyEntity, UUID> {
-    boolean existsByKeyValueAndDateTimeDeleteIsNull(String keyValue);
-
     boolean existsByKeyValue(String keyValue);
 
     PixKeyEntity findByIdAndDateTimeDeleteIsNull(UUID id);
@@ -26,16 +26,16 @@ public interface PixKeyRepository extends JpaRepository<PixKeyEntity, UUID> {
             "AND (:agencyNumber is NULL or p.agencyNumber = :agencyNumber) " +
             "AND (:accountNumber is NULL or p.accountNumber = :accountNumber) " +
             "AND (:accountHolderName is NULL or p.accountHolderName = :accountHolderName)" +
-            "AND (:dateTimeInclusaoInicio is NULL or p.dateTimeCreation between :dateTimeInclusaoInicio and :dateTimeInclusaoFim)" +
-            "AND (:dateTimeExclusaoInicio is NULL or p.dateTimeDelete between :dateTimeExclusaoInicio and :dateTimeExclusaoFim)")
+            "AND (:dateTimeCreateStart is NULL or p.dateTimeCreation between :dateTimeCreateStart and :dateTimeCreateEnd)" +
+            "AND (:dateTimeDeleteStart is NULL or p.dateTimeDelete between :dateTimeDeleteStart and :dateTimeDeleteEnd)")
     List<PixKeyEntity> findCustom(UUID id,
-                                  String keyType,
+                                  KeyTypeEntity keyType,
                                   String agencyNumber,
                                   String accountNumber,
                                   String accountHolderName,
-                                  LocalDateTime dateTimeInclusaoInicio,
-                                  LocalDateTime dateTimeInclusaoFim,
-                                  LocalDateTime dateTimeExclusaoInicio,
-                                  LocalDateTime dateTimeExclusaoFim);
+                                  LocalDateTime dateTimeCreateStart,
+                                  LocalDateTime dateTimeCreateEnd,
+                                  LocalDateTime dateTimeDeleteStart,
+                                  LocalDateTime dateTimeDeleteEnd);
 
 }

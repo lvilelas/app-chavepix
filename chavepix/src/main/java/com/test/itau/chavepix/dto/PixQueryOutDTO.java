@@ -1,20 +1,18 @@
 package com.test.itau.chavepix.dto;
 
-import com.fasterxml.jackson.annotation.*;
-import com.test.itau.chavepix.persistence.entity.PixKeyEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigInteger;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Getter
 @Setter
 @AllArgsConstructor
 public class PixQueryOutDTO {
 
+    @JsonProperty("id")
     private UUID id;
 
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)

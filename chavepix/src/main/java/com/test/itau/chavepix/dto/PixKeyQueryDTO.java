@@ -1,9 +1,6 @@
 package com.test.itau.chavepix.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -13,6 +10,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @ToString
+@RequiredArgsConstructor
 public class PixKeyQueryDTO {
 
     private UUID id;
