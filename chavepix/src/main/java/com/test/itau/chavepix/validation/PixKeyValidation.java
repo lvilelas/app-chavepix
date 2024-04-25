@@ -4,7 +4,6 @@ import br.com.fluentvalidator.AbstractValidator;
 import com.test.itau.chavepix.domain.AccountType;
 import com.test.itau.chavepix.domain.KeyType;
 import com.test.itau.chavepix.domain.PersonType;
-import com.test.itau.chavepix.domain.PixKey;
 import com.test.itau.chavepix.dto.KeyTypeDTO;
 import com.test.itau.chavepix.dto.PixKeyDTO;
 import com.test.itau.chavepix.exceptions.PixKeyException;

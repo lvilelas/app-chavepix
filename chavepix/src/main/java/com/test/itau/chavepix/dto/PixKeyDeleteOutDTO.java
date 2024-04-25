@@ -2,8 +2,6 @@ package com.test.itau.chavepix.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.test.itau.chavepix.persistence.entity.PixKeyEntity;
-import lombok.Getter;
 import lombok.Setter;
 
 import java.util.UUID;

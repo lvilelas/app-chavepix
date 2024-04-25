@@ -1,16 +1,16 @@
 package com.test.itau.chavepix.validation;
+
 import br.com.fluentvalidator.Validator;
 import br.com.fluentvalidator.context.ValidationResult;
-import com.test.itau.chavepix.domain.KeyType;
 import com.test.itau.chavepix.dto.PixKeyQueryDTO;
-import com.test.itau.chavepix.exceptions.PixKeyException;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PixKeySearchValidationTest {
 

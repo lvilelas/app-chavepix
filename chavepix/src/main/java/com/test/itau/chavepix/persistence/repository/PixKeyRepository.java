@@ -1,6 +1,5 @@
 package com.test.itau.chavepix.persistence.repository;
 
-import com.test.itau.chavepix.domain.KeyType;
 import com.test.itau.chavepix.persistence.entity.KeyTypeEntity;
 import com.test.itau.chavepix.persistence.entity.PixKeyEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

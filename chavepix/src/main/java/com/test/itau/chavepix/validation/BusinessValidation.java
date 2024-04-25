@@ -1,6 +1,5 @@
 package com.test.itau.chavepix.validation;
 
-import com.test.itau.chavepix.domain.KeyType;
 import com.test.itau.chavepix.domain.PersonType;
 import com.test.itau.chavepix.domain.PixKey;
 import com.test.itau.chavepix.dto.PersonTypeDTO;
