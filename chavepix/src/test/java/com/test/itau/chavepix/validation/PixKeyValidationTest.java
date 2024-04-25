@@ -3,15 +3,12 @@ package com.test.itau.chavepix.validation;
 import br.com.fluentvalidator.Validator;
 import br.com.fluentvalidator.context.ValidationResult;
 import com.test.itau.chavepix.dto.PixKeyDTO;
-import com.test.itau.chavepix.exceptions.PixKeyException;
 import com.test.itau.chavepix.mocks.PixKeyDTOMocks;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
 
 public class PixKeyValidationTest extends PixKeyDTOMocks {
 

@@ -1,6 +1,5 @@
 package com.test.itau.chavepix.persistence.entity;
 
-import com.test.itau.chavepix.dto.PixKeyDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

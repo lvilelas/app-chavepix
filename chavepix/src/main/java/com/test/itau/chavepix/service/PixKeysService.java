@@ -1,7 +1,6 @@
 package com.test.itau.chavepix.service;
 
 import com.test.itau.chavepix.controller.PixKeyController;
-import com.test.itau.chavepix.domain.KeyType;
 import com.test.itau.chavepix.domain.PixKey;
 import com.test.itau.chavepix.domain.PixKeyQuery;
 import com.test.itau.chavepix.dto.PixKeyDeleteOutDTO;
@@ -16,7 +15,6 @@ import com.test.itau.chavepix.validation.BusinessValidation;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;

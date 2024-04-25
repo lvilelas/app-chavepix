@@ -2,7 +2,6 @@ package com.test.itau.chavepix.handler;
 
 import br.com.fluentvalidator.context.Error;
 import br.com.fluentvalidator.context.ValidationResult;
-import com.test.itau.chavepix.dto.ErrorDTO;
 import com.test.itau.chavepix.dto.ErrorResponseDTO;
 import com.test.itau.chavepix.exceptions.BusinessRulesException;
 import com.test.itau.chavepix.exceptions.PixKeyException;
@@ -11,10 +10,8 @@ import com.test.itau.chavepix.mocks.PixKeyDTOMocks;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

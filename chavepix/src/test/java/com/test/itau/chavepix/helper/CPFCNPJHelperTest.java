@@ -22,7 +22,7 @@ public class CPFCNPJHelperTest {
         assertFalse(CPFCNPJHelper.isCNPJ("99999999999999"));
         assertFalse(CPFCNPJHelper.isCNPJ("04.252.011/0001-11"));
         assertFalse(CPFCNPJHelper.isCNPJ("12345678901234567890"));
-        assertFalse(CPFCNPJHelper.isCNPJ("04.252.011/0001-1")); // CNPJ inválido (menos de 14 dígitos)
+        assertFalse(CPFCNPJHelper.isCNPJ("04.252.011/0001-1"));
     }
 
     @Test
@@ -39,6 +39,6 @@ public class CPFCNPJHelperTest {
         assertFalse(CPFCNPJHelper.isCPF("88888888888"));
         assertFalse(CPFCNPJHelper.isCPF("99999999999"));
         assertFalse(CPFCNPJHelper.isCPF("123.456.789-08"));
-        assertFalse(CPFCNPJHelper.isCPF("123456789012345")); // CPF inválido (mais de 11 dígitos)
+        assertFalse(CPFCNPJHelper.isCPF("123456789012345"));
     }
 }

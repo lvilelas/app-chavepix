@@ -1,6 +1,5 @@
 package com.test.itau.chavepix.persistence.entity;
 
-import com.test.itau.chavepix.domain.KeyType;
 import lombok.AllArgsConstructor;
 import org.apache.tomcat.util.collections.CaseInsensitiveKeyMap;
 
