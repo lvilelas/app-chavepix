@@ -170,7 +170,7 @@ public interface PixKeyMapper {
 
     @AfterMapping
     default void toPixKeyQuery(@MappingTarget PixKeyQuery pixKey, PixKeyQueryDTO pixKeyQueryDTO){
-        String dateCreate = pixKeyQueryDTO.getParameters().get("data_criacao");
+        String dateCreate = pixKeyQueryDTO.getParameters().get("data_inclusao");
         if(StringUtils.isNotBlank(dateCreate)){
             pixKey.setDateCreateStart(DateTimeFormatterHelper
                     .toLocalDateTime(dateCreate,DateTimeFormatterHelper
@@ -180,7 +180,7 @@ public interface PixKeyMapper {
 
         String dateDelete = pixKeyQueryDTO.getParameters().get("data_exclusao");
         if(StringUtils.isNotBlank((dateDelete))){
-            pixKey.setDateCreateStart(DateTimeFormatterHelper
+            pixKey.setDateDeleteStart(DateTimeFormatterHelper
                     .toLocalDateTime(dateDelete,DateTimeFormatterHelper
                             .formatterWithDateOnly()));
             pixKey.setDateDeleteEnd(pixKey.getDateDeleteStart().plusMinutes(1439));

@@ -97,4 +97,56 @@ public class PixKeySearchValidationTest {
         final ValidationResult result = validation.validate(dto);
         assertFalse(result.isValid());
     }
+
+    @Test
+    public void testValidateAgencyNumber_Valid() {
+        PixKeySearchValidation validator = new PixKeySearchValidation();
+        PixKeyQueryDTO dto = new PixKeyQueryDTO();
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("numero_agencia", "1234");
+        dto.setParameters(parameters);
+
+        ValidationResult result = validator.validate(dto);
+
+        assertTrue(result.isValid());
+    }
+
+    @Test
+    public void testValidateAgencyNumber_Invalid() {
+        PixKeySearchValidation validator = new PixKeySearchValidation();
+        PixKeyQueryDTO dto = new PixKeyQueryDTO();
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("numero_agencia", "10000");
+        dto.setParameters(parameters);
+
+        ValidationResult result = validator.validate(dto);
+
+        assertFalse(result.isValid());
+    }
+
+    @Test
+    public void testValidateAccountNumber_Valid() {
+        PixKeySearchValidation validator = new PixKeySearchValidation();
+        PixKeyQueryDTO dto = new PixKeyQueryDTO();
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("numero_conta", "12345678");
+        dto.setParameters(parameters);
+
+        ValidationResult result = validator.validate(dto);
+
+        assertTrue(result.isValid());
+    }
+
+    @Test
+    public void testValidateAccountNumber_Invalid() {
+        PixKeySearchValidation validator = new PixKeySearchValidation();
+        PixKeyQueryDTO dto = new PixKeyQueryDTO();
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("numero_conta", "100000000");
+        dto.setParameters(parameters);
+
+        ValidationResult result = validator.validate(dto);
+
+        assertFalse(result.isValid());
+    }
 }
