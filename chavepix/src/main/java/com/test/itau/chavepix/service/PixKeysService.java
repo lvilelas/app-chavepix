@@ -46,13 +46,12 @@ public class PixKeysService {
         businessValidation.validatePixKeyAccount(pixKeys, pixKey);
 
         PixKeyEntity pixKeyEntity = PixKeyMapper.INSTANCE.toPixKeyEntity(pixKey);
-        log.info("Saving pix key: {}", pixKey);
+        log.info("Saving pix key: {}", pixKey.toString());
 
         return PixKeyMapper.INSTANCE.toPixKey(pixKeyRepository.save(pixKeyEntity));
     }
 
     public List<PixQueryOutDTO> searchPixKey(PixKeyQuery pixKeyQuery) {
-        log.info("Searching pix key: {}", pixKeyQuery);
 
 
         List<PixKeyEntity> pixKeys = pixKeyRepository.findCustom(pixKeyQuery.getId(),
@@ -66,7 +65,7 @@ public class PixKeysService {
                                                                 pixKeyQuery.getDateDeleteEnd());
 
 
-        log.info("Searching {} pix keys returned with query: {}", pixKeys.size(), pixKeyQuery);
+        log.info("Searching {} pix keys returned with query: {}", pixKeys.size(), pixKeyQuery.toString());
         return pixKeys.stream()
                 .map(PixKeyMapper.INSTANCE::toPixQueryOutDTO)
                 .collect(Collectors.toList());
@@ -74,8 +73,6 @@ public class PixKeysService {
 
 
     public PixKey updatePixKey(PixKey newPixKey) {
-        log.info("Updating pix key: {}", newPixKey);
-
         PixKeyEntity pixKeyEntity = Optional.ofNullable(pixKeyRepository.findByIdAndDateTimeDeleteIsNull(newPixKey.getId())).orElseThrow(PixKeyNotFoundException::new);
 
         PixKey oldPixKey = PixKeyMapper.INSTANCE.toPixKey(pixKeyEntity);
@@ -91,7 +88,6 @@ public class PixKeysService {
     }
 
     public PixKeyDeleteOutDTO deletePixKey(UUID id) {
-        log.info("Deleting pix key: {}", id);
         PixKeyEntity pixKeyEntity = Optional.ofNullable(pixKeyRepository.findByIdAndDateTimeDeleteIsNull(id)).orElseThrow(PixKeyNotFoundException::new);
 
         pixKeyEntity.setDateTimeDelete(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));

@@ -32,7 +32,7 @@ public class PixKeyController {
 
     @PostMapping
     public PixKeyOutDTO createPixKey(@RequestBody PixKeyDTO pixKeyDTO){
-        log.info("Create pix key request : {}", pixKeyDTO);
+        log.info("Create pix key request : {}", pixKeyDTO.toString());
         ValidationResult validationResult = pixKeyValidation.validate(pixKeyDTO);
 
         validationResult.isInvalidThrow(PixKeyException.class);
@@ -46,11 +46,11 @@ public class PixKeyController {
 
     @PatchMapping
     public PixKeyOutDTO updatePixKey(@RequestBody PixKeyUpdateDTO pixKeyUpdateDTO){
-
+        log.info("Update pix key request : {}", pixKeyUpdateDTO.toString());
         ValidationResult validationResult = pixKeyUpdateValidation.validate(pixKeyUpdateDTO);
 
         validationResult.isInvalidThrow(PixKeyException.class);
-
+        log.info("pix key fields validation success");
         PixKey pixKey = PixKeyMapper.INSTANCE.toPixKey(pixKeyUpdateDTO);
         return PixKeyMapper.INSTANCE.toPixKeyOutDTO(pixKeysService.updatePixKey(pixKey));
     }
@@ -59,20 +59,20 @@ public class PixKeyController {
 
     @GetMapping(value = {"/","/{id}"})
     public List<PixQueryOutDTO> searchPixKey(@PathVariable(required = false) UUID id, @RequestParam Map<String, String> parameters){
-
+        log.info("Create pix key request : {} {}", id, parameters.toString());
         PixKeyQueryDTO pixKeyQueryDTO = new PixKeyQueryDTO(id,parameters);
 
         ValidationResult validationResult = pixKeySearchValidation.validate(pixKeyQueryDTO);
 
         validationResult.isInvalidThrow(PixKeyException.class);
-
+        log.info("pix key fields validation success");
         return pixKeysService.searchPixKey(PixKeyMapper.INSTANCE.toPixKeyQuery(pixKeyQueryDTO));
     }
 
 
     @DeleteMapping("/{id}")
     public PixKeyDeleteOutDTO deletePixKey(@PathVariable UUID id){
-
+        log.info("Delete pix key request : {}",id.toString());
         return pixKeysService.deletePixKey(id);
     }
 
