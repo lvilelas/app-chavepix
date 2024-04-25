@@ -1,9 +1,13 @@
 package com.test.itau.chavepix.exceptions;
 
-public class PixKeyNotFoundException extends RuntimeException{
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-    public PixKeyNotFoundException(String msg){
-        super(msg);
+@ResponseStatus(value = HttpStatus.NOT_FOUND)
+public class PixKeyNotFoundException extends RuntimeException {
+
+    public PixKeyNotFoundException() {
+        super("PixKey not found");
     }
-
 }

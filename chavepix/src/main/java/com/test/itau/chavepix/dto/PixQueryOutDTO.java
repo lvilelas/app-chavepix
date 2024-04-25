@@ -1,19 +1,18 @@
 package com.test.itau.chavepix.dto;
 
-import com.fasterxml.jackson.annotation.*;
-import com.test.itau.chavepix.persistence.entity.PixKeyEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.math.BigInteger;
 import java.util.UUID;
 
-@Getter
 @Setter
 @AllArgsConstructor
 public class PixQueryOutDTO {
 
+    @JsonProperty("id")
     private UUID id;
 
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
@@ -32,10 +31,10 @@ public class PixQueryOutDTO {
     private PersonTypeDTO personTypeDTO;
 
     @JsonProperty("numero_agencia")
-    private String agencyNumber;
+    private BigInteger agencyNumber;
 
     @JsonProperty("numero_conta")
-    private String accountNumber;
+    private BigInteger accountNumber;
 
     @JsonProperty("nome_correntista")
     private String accountHolderName;
@@ -44,22 +43,9 @@ public class PixQueryOutDTO {
     private String accountHolderLastName;
 
     @JsonProperty("data_inclusao")
-    private LocalDateTime dateTimeCreation;
+    private String dateTimeCreation;
 
     @JsonProperty("data_exclusao")
     private String dateTimeDelete;
 
-    public PixQueryOutDTO(PixKeyEntity pixKeyEntity) {
-        this.id = pixKeyEntity.getId();
-        this.keyTypeDTO = KeyTypeDTO.valueOf(pixKeyEntity.getKeyTypeEntity().name());
-        this.keyValue = pixKeyEntity.getKeyValue();
-        this.accountTypeDTO = AccountTypeDTO.valueOf(pixKeyEntity.getAccountTypeEntity().name());
-        this.personTypeDTO = PersonTypeDTO.valueOf(pixKeyEntity.getPersonTypeEntity().name());
-        this.agencyNumber = pixKeyEntity.getAgencyNumber();
-        this.accountNumber = pixKeyEntity.getAccountNumber();
-        this.accountHolderName = pixKeyEntity.getAccountHolderName();
-        this.accountHolderLastName = pixKeyEntity.getAccountHolderLastName() == null ? "" : pixKeyEntity.getAccountHolderLastName();
-        this.dateTimeCreation = pixKeyEntity.getDateTimeCreation();
-        this.dateTimeDelete = pixKeyEntity.getDateTimeDelete()==null ? "" : pixKeyEntity.getDateTimeDelete().toString();
-    }
 }

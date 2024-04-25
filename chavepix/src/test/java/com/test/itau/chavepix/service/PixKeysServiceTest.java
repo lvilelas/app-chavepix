@@ -1,171 +1,110 @@
 package com.test.itau.chavepix.service;
 
-import com.test.itau.chavepix.dto.PixKeyDTO;
+import com.test.itau.chavepix.domain.PixKey;
+import com.test.itau.chavepix.domain.PixKeyQuery;
 import com.test.itau.chavepix.dto.PixKeyDeleteOutDTO;
-import com.test.itau.chavepix.dto.PixKeyQueryDTO;
 import com.test.itau.chavepix.dto.PixQueryOutDTO;
-import com.test.itau.chavepix.exceptions.InvalidFieldException;
 import com.test.itau.chavepix.exceptions.PixKeyNotFoundException;
 import com.test.itau.chavepix.mocks.PixKeyDTOMocks;
-import com.test.itau.chavepix.model.AccountPixKeysModel;
 import com.test.itau.chavepix.persistence.entity.PixKeyEntity;
 import com.test.itau.chavepix.persistence.repository.PixKeyRepository;
-import com.test.itau.chavepix.validation.handler.PixKeyQueryValidationHandler;
-import com.test.itau.chavepix.validation.handler.PixKeyRequestValidatorHandler;
-import com.test.itau.chavepix.validation.handler.PixKeyValidationHandler;
+import com.test.itau.chavepix.validation.BusinessValidation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.NotReadablePropertyException;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.math.BigInteger;
 import java.util.*;
 
-import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
 public class PixKeysServiceTest extends PixKeyDTOMocks {
 
     @Mock
     private PixKeyRepository pixKeyRepository;
 
     @Mock
-    private PixKeyValidationHandler pixKeyValidationHandler;
-
-    @Mock
-    @Qualifier("createRequestChain")
-    private PixKeyRequestValidatorHandler pixKeyRequestValidatorHandler;
-
-    @Mock
-    private PixKeyQueryValidationHandler pixKeyQueryValidationHandler;
+    private BusinessValidation businessValidation;
 
     @InjectMocks
     private PixKeysService pixKeysService;
 
     @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
+    public void setup() {
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
     public void testCreatePixKey() {
-
-        // Mocking expected output data
-        PixKeyDTO pixKeyDTO = getValidCPFPixKeyMock();
-        PixKeyEntity pixKeyEntity = new PixKeyEntity(pixKeyDTO);
-        pixKeyEntity.setDateTimeCreation(LocalDateTime.now());
-        pixKeyEntity.setId(UUID.randomUUID());
-        List<PixKeyEntity> list = Collections.nCopies(5, new PixKeyEntity(getValidCPFPixKeyMock()));
-
-        // Mocking repository behavior
-
-        when(pixKeyRepository.findByAgencyNumberAndAccountNumber(anyString(), anyString())).thenReturn(list);
+        PixKey pixKey = getValidPixKey();
+        PixKeyEntity pixKeyEntity = getPixKeyEntity();
         when(pixKeyRepository.save(any())).thenReturn(pixKeyEntity);
 
-        // Calling the service method
-        pixKeysService.createPixKey(pixKeyDTO);
+        PixKey createdPixKey = pixKeysService.createPixKey(pixKey);
 
-         //Verifying interactions
-        verify(pixKeyRequestValidatorHandler, times(1)).validateRequest(any(PixKeyDTO.class));
-        verify(pixKeyValidationHandler, times(1)).validatePixKey(any(AccountPixKeysModel.class), any(PixKeyDTO.class));
+        assertNotNull(createdPixKey);
+        verify(businessValidation, times(1)).validatePixKey(pixKey);
+        verify(businessValidation, times(1)).validatePixKeyAccount(Collections.emptyList(), pixKey);
+        verify(pixKeyRepository, times(1)).save(any());
     }
 
     @Test
-    void testSearchPixKey() {
-        // Mocking PixKeyQueryDTO
+    public void testSearchPixKey() {
+        PixKeyQuery pixKeyQuery = getPixKeyQuery();
+        pixKeyQuery.setKeyType("CPF");
+        when(pixKeyRepository.findCustom(any(), any(), any(), any(), any(), any(), any(), any(), any())).thenReturn(Collections.singletonList( getPixKeyEntity()));
 
-        PixKeyEntity pixKeyEntity = new PixKeyEntity(getValidCPFPixKeyMock());
-        PixKeyQueryDTO pixKeyQueryDTO = new PixKeyQueryDTO(pixKeyEntity.getId(),
-                pixKeyEntity.getKeyTypeEntity().name(),
-                pixKeyEntity.getAgencyNumber(),
-                pixKeyEntity.getAccountNumber(),
-                pixKeyEntity.getAccountHolderName());
+        List<PixQueryOutDTO> pixKeys = pixKeysService.searchPixKey(pixKeyQuery);
 
-        // Mocking PixKeyEntity list
-        List<PixKeyEntity> pixKeyEntities = new ArrayList<>();
-        pixKeyEntities.add(pixKeyEntity);
-
-        // Mocking repository behavior
-        when(pixKeyRepository.findCustom(eq(pixKeyQueryDTO.getId()), any(), any(), any(), any())).thenReturn(pixKeyEntities);
-
-        // Mocking PixQueryOutDTO list (expected output)
-        List<PixQueryOutDTO> expectedOutput = new ArrayList<>();
-        expectedOutput.add(new PixQueryOutDTO(pixKeyEntity));
-
-        // Performing the test
-        List<PixQueryOutDTO> result = pixKeysService.searchPixKey(pixKeyQueryDTO,null);
-
-        // Verifying the result
-        assertEquals(expectedOutput.size(), result.size());
-        assertEquals(expectedOutput.get(0).getKeyValue(), result.get(0).getKeyValue());
-
-        verify(pixKeyQueryValidationHandler, times(1)).validatePixKeyQuery(anyMap());
+        assertNotNull(pixKeys);
+        assertFalse(pixKeys.isEmpty());
+        verify(pixKeyRepository, times(1)).findCustom(any(), any(), any(), any(), any(), any(), any(), any(), any());
     }
 
     @Test
-    void testDeletePixKey() {
-        // Mocking PixKeyEntity
+    public void testUpdatePixKey() {
+        PixKey newPixKey = getValidPixKey();
+
+        PixKeyEntity pixKeyEntity = getPixKeyEntity();
+        when(pixKeyRepository.findByIdAndDateTimeDeleteIsNull(any())).thenReturn(pixKeyEntity);
+        when(pixKeyRepository.save(any())).thenReturn(pixKeyEntity);
+
+        PixKey updatedPixKey = pixKeysService.updatePixKey(newPixKey);
+        List<PixKey> list = new ArrayList<>();
+        list.add(newPixKey);
+
+        assertNotNull(updatedPixKey);
+
+        verify(businessValidation, times(1)).validatePixKeyAccount(any(), any());
+        verify(pixKeyRepository, times(1)).findByIdAndDateTimeDeleteIsNull(any());
+        verify(pixKeyRepository, times(1)).save(any());
+    }
+
+    @Test
+    public void testDeletePixKey() {
         UUID id = UUID.randomUUID();
-        PixKeyEntity pixKeyEntity = new PixKeyEntity(getValidCPFPixKeyMock());
-        pixKeyEntity.setId(id);
-        pixKeyEntity.setDateTimeCreation(LocalDateTime.now());
-        pixKeyEntity.setDateTimeDelete(null);
+        PixKeyEntity pixKeyEntity = getPixKeyEntity();
+        when(pixKeyRepository.findByIdAndDateTimeDeleteIsNull(any())).thenReturn(pixKeyEntity);
+        when(pixKeyRepository.save(any())).thenReturn(pixKeyEntity);
 
-        // Mocking repository behavior
-        when(pixKeyRepository.findById(id)).thenReturn(Optional.of(pixKeyEntity));
-        when(pixKeyRepository.save(any(PixKeyEntity.class))).thenReturn(pixKeyEntity);
+        PixKeyDeleteOutDTO deletedPixKey = pixKeysService.deletePixKey(id);
 
-        // Performing the test
-        PixKeyDeleteOutDTO result = pixKeysService.deletePixKey(id);
-
-        // Verifying the result
-        assertNotNull(result);
-        assertEquals(id, result.getId());
-        assertNotNull(result.getDateTimeDelete());
-
-        // Verifying repository interactions
-        verify(pixKeyRepository, times(1)).findById(id);
-        verify(pixKeyRepository, times(1)).save(any(PixKeyEntity.class));
+        assertNotNull(deletedPixKey);
+        verify(pixKeyRepository, times(1)).findByIdAndDateTimeDeleteIsNull(any());
+        verify(pixKeyRepository, times(1)).save(any());
     }
 
     @Test
-    void testDeletePixKeyNotFound() {
-        // Mocking repository behavior
-        when(pixKeyRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
-
-        // Performing the test and verifying the exception
-        assertThrows(PixKeyNotFoundException.class, () -> pixKeysService.deletePixKey(UUID.randomUUID()));
-
-        // Verifying repository interactions
-        verify(pixKeyRepository, times(1)).findById(any(UUID.class));
-        verify(pixKeyRepository, never()).save(any(PixKeyEntity.class));
-    }
-
-    @Test
-    void testDeletePixKeyAlreadyDeleted() {
-        // Mocking PixKeyEntity
+    public void testDeletePixKey_PixKeyNotFoundException() {
         UUID id = UUID.randomUUID();
-        PixKeyEntity pixKeyEntity = new PixKeyEntity();
-        pixKeyEntity.setId(id);
-        pixKeyEntity.setDateTimeDelete(LocalDateTime.now(ZoneId.of("America/Sao_Paulo"))); // Chave Pix já foi excluída
+        when(pixKeyRepository.findByIdAndDateTimeDeleteIsNull(any())).thenReturn(null);
 
-        // Mocking repository behavior
-        when(pixKeyRepository.findById(id)).thenReturn(Optional.of(pixKeyEntity));
-
-        // Performing the test and verifying the exception
-        assertThrows(RuntimeException.class, () -> pixKeysService.deletePixKey(id));
-
-        // Verifying repository interactions
-        verify(pixKeyRepository, times(1)).findById(id);
-        verify(pixKeyRepository, never()).save(any(PixKeyEntity.class));
+        assertThrows(PixKeyNotFoundException.class, () -> pixKeysService.deletePixKey(id));
+        verify(pixKeyRepository, times(1)).findByIdAndDateTimeDeleteIsNull(any());
+        verify(pixKeyRepository, never()).save(any());
     }
 }
