@@ -1,0 +1,37 @@
+name: deploy app-chavepix
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Java
+        uses: actions/setup-java@v4.2.1
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Build app
+        run: mvn -f chavepix/pom.xml clean install
+      - name: Login docker hub
+        run: docker login -u ${{secrets.DOCKER_LOGIN}} -p ${{secrets.DOCKER_SECRET_TOKEN}}
+      - name: Docker Build
+        run: docker build -t lfvilelas/app-chavepix .
+      - name: Push Image Docker
+        run: docker push lfvilelas/app-chavepix
+
+  deploy:
+    needs: build
+    runs-on: self-hosted
+    steps:
+      - name: Pull imagem from docker Hub
+        run: docker pull lfvilelas/app-chavepix:latest
+      - name: Remove docker container
+        run: docker rm -f app-chavepix-container
+      - name: Run docker container
+        run: docker run -d -p 8080:8080 -e DATABASE_USER=${{secrets.DATABASE_USER}} -e DATABASE_PASSWORD=${{secrets.DATABASE_PASSWORD}} -e DATABASE_URL=${{secrets.DATABASE_URL}} --name app-chavepix-container lfvilelas/app-chavepix
+
