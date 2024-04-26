@@ -33,5 +33,5 @@ jobs:
       - name: Remove docker container
         run: docker rm -f app-chavepix-container
       - name: Run docker container
-        run: docker run -d -p 8080:8080 -e DATABASE_USERNAME=${{secrets.DATABASE_USER}} -e DATABASE_PASSWORD=${{secrets.DATABASE_PASSWORD}} -e DATABASE_URL=${{secrets.DATABASE_URL}} --name app-chavepix-container lfvilelas/app-chavepix
+        run: docker run -d -p 8080:8080 -e DATABASE_USER=${{secrets.DATABASE_USER}} -e DATABASE_PASSWORD=${{secrets.DATABASE_PASSWORD}} -e DATABASE_URL=${{secrets.DATABASE_URL}} --name app-chavepix-container lfvilelas/app-chavepix
 
