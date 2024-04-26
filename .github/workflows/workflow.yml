@@ -28,6 +28,10 @@ jobs:
     needs: build
     runs-on: self-hosted
     steps:
-      - name: Docker Compose up
-        run: docker-compose up
+      - name: Pull imagem from docker Hub
+        run: docker pull lfvilelas/app-chavepix:latest
+      - name: Remove docker container
+        run: docker rm -f app-chavepix-container
+      - name: Run docker container
+        run: docker run -d -p 8080:8080 --name app-chavepix-container lfvilelas/app-chavepix
 
