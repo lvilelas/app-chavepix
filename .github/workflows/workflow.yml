@@ -16,7 +16,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Build app
-        run: mvn clean install
+        run: mvn -f chavepix/pom.xml clean install
       - name: Login docker hub
         run: docker login -u ${{secrets.DOCKER_LOGIN}} -p ${{secrets.DOCKER_SECRET_TOKEN}}
       - name: Docker Build
