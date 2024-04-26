@@ -1,0 +1,27 @@
+name: deploy app-chavepix
+
+on:
+  push:
+    branches: [teste-ci-cd]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: action/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build project
+        run: mvc clean install
+      - name: Login docker hub
+        run: docker login -u ${{secrets.DOCKER_LOGIN}} -p ${{secrets}}
+      - name: docker build -t lfvilelas/app-chavepix
+
+
+

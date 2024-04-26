@@ -1,7 +1,8 @@
-FROM amazoncorretto:22-alpine-jdk
-LABEL authors="lvile"
+FROM eclipse-temurin:17-jdk-alpine
+LABEL authors="lvilelas"
+WORKDIR /app
+COPY target/chavepix-0.0.1-SNAPSHOT.jar chavepix-0.0.1-SNAPSHOT.jar
 VOLUME /tmp
 EXPOSE 8080
-ARG JAR_FILE=target/chavepix-0.0.1-SNAPSHOT.jar
-ADD ${JAR_FILE} app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+
+ENTRYPOINT ["java","-jar","chavepix-0.0.1-SNAPSHOT.jar"]
