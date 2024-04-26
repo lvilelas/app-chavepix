@@ -5,4 +5,4 @@ COPY chavepix/target/chavepix-0.0.1-SNAPSHOT.jar chavepix-0.0.1-SNAPSHOT.jar
 COPY docker-compose.yaml docker-compose.yaml
 EXPOSE 8080
 
-ENTRYPOINT ["java","-jar","chavepix-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java","-Dspring.profiles.active=prod","-jar","chavepix-0.0.1-SNAPSHOT.jar"]
