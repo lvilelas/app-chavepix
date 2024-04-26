@@ -15,8 +15,8 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: Build project
-        run: mvc clean install
+      - name: Setup Maven
+        uses: stCarolas/setup-maven@v5
       - name: Login docker hub
         run: docker login -u ${{secrets.DOCKER_LOGIN}} -p ${{secrets}}
       - name: Docker Build
