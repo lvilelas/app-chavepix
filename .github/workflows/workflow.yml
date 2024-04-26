@@ -24,5 +24,10 @@ jobs:
       - name: Push Image Docker
         run: docker push lfvilelas/app-chavepix
 
-
+  deploy:
+    needs: build
+    runs-on: self-hosted
+    steps:
+      - name: Docker Compose up
+        run: docker compose up
 
