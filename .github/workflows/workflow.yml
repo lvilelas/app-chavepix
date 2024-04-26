@@ -2,7 +2,7 @@ name: deploy app-chavepix
 
 on:
   push:
-    branches: [teste-ci-cd]
+    branches: [main]
 
 jobs:
   build:
